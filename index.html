@@ -5,21 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Petualangan Kapten Cilik</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Font lucu biar mirip game -->
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!-- SCENE 1: OPENING -->
-    <div id="scene-1" class="scene" style="background-image: url('openingscreen.jpeg');">
-        
-        <!-- Animasi Awan Tipis -->
+    <div id="scene-1" class="scene active" style="background-image: url('openingscreen.jpeg');">
         <div class="awan awan-1"></div>
         <div class="awan awan-2"></div>
         <div class="awan awan-3"></div>
+        <button class="btn-mulai" onclick="pindahScene(2)">AYO MULAI!</button>
+    </div>
 
-        <!-- Tombol ditaruh di dalam scene ini -->
-        <button class="btn-mulai" onclick="mulaiPetualangan()">AYO MULAI!</button>
+
+    <div id="scene-2" class="scene hidden" style="background-image: url('backgroundscene2.jpeg');">
+        
+        <div class="glass-panel">
+            <h2 class="judul-scene">Siapa Namamu, Kapten?</h2>
+            
+            <input type="text" id="input-nama" class="input-game" placeholder="Ketik namamu di sini..." autocomplete="off">
+            
+            <h3 class="sub-judul">Pilih Karaktermu:</h3>
+            
+            <div class="pilihan-avatar">
+                <div class="avatar-card" id="card-cowok" onclick="pilihAvatar('cowok')">
+                    <img src="Kapten_Cowok.jpeg" alt="Kapten Cowok">
+                </div>
+                <div class="avatar-card" id="card-cewek" onclick="pilihAvatar('cewek')">
+                    <img src="Kapten_Cewek.jpeg" alt="Kapten Cewek">
+                </div>
+            </div>
+
+            <button class="btn-lanjut" onclick="cekDataLanjut()">Lanjut Persiapan!</button>
+        </div>
+
     </div>
 
     <script src="script.js"></script>

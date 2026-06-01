@@ -100,3 +100,107 @@ body {
     from { transform: scale(1); }
     to { transform: scale(1.05); }
 }
+
+/* ==========================================
+            DESAIN SCENE 2 (INPUT & AVATAR)
+========================================== */
+
+/* Menyembunyikan scene yang belum aktif */
+.hidden {
+    display: none !important;
+}
+
+/* Panel Kaca di tengah layar */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    padding: 40px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    border: 5px solid white;
+    width: 600px; /* Lebar kotak panel */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.judul-scene { color: #2196F3; font-size: 32px; margin-top: 0; margin-bottom: 20px;}
+.sub-judul { color: #4CAF50; font-size: 24px; margin-bottom: 15px;}
+
+/* Desain Input Ketik Nama */
+.input-game {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 24px;
+    padding: 15px;
+    width: 80%;
+    border-radius: 20px;
+    border: 4px solid #87CEEB;
+    text-align: center;
+    margin-bottom: 30px;
+    outline: none;
+    color: #333;
+    font-weight: 600;
+}
+.input-game:focus { border-color: #2196F3; }
+
+/* Desain Pilihan Avatar */
+.pilihan-avatar {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.avatar-card {
+    background: white;
+    padding: 10px;
+    border-radius: 25px;
+    border: 6px solid transparent; /* Border transparan buat nanti kalau diklik */
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 180px;
+    height: 180px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    overflow: hidden; /* Biar gambar melengkung ngikutin kotak */
+}
+
+.avatar-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.avatar-card:hover { transform: translateY(-10px); }
+
+/* Jika Avatar dipilih (Efek Border Hijau) */
+.avatar-card.selected {
+    border-color: #4CAF50;
+    transform: scale(1.1);
+    box-shadow: 0 15px 25px rgba(76, 175, 80, 0.4);
+}
+
+/* Tombol Lanjut */
+.btn-lanjut {
+    background: linear-gradient(to bottom, #4CAF50, #2E7D32); /* Warna Hijau */
+    color: white;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 28px;
+    padding: 15px 50px;
+    border: 5px solid white;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 8px 0 #1B5E20;
+    transition: all 0.1s ease;
+}
+
+.btn-lanjut:active {
+    transform: translateY(8px);
+    box-shadow: 0 0 0 #1B5E20;
+}
+
+/* Memastikan Scene 2 posisinya tepat di tengah layar */
+#scene-2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
