@@ -1,0 +1,88 @@
+/* Hilangkan margin bawaan dan cegah layar bisa di-scroll */
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; 
+    font-family: 'Fredoka', sans-serif;
+    user-select: none;
+}
+
+/* Pengaturan Layar Utama */
+.scene {
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
+    background-position: center bottom;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    /* REVISI: Mengubah jarak tombol agar tidak terpotong di bawah */
+    padding-bottom: 12vh; 
+    position: relative; /* Penting biar awannya nempel di dalam scene ini */
+}
+
+/* --- Desain Animasi Awan Tipis --- */
+.awan {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.6); /* Warna putih transparan */
+    border-radius: 100px;
+    filter: blur(8px); /* Bikin awannya agak ngeblur biar keliatan tipis & natural */
+    z-index: 1; /* Pastikan awan ada di belakang tombol */
+}
+
+.awan-1 {
+    width: 300px; height: 60px;
+    top: 15%; left: -300px;
+    animation: gerakAwan 25s linear infinite; /* Gerak pelan 25 detik */
+}
+
+.awan-2 {
+    width: 200px; height: 50px;
+    top: 30%; left: -200px;
+    animation: gerakAwan 35s linear infinite 10s; /* Mulai agak telat */
+}
+
+.awan-3 {
+    width: 400px; height: 80px;
+    top: 10%; left: -400px;
+    animation: gerakAwan 40s linear infinite 5s;
+}
+
+/* Kunci Animasi Awan Berjalan dari kiri ke kanan */
+@keyframes gerakAwan {
+    from { transform: translateX(0); }
+    to { transform: translateX(120vw); } /* Tembus sampai lewat ujung kanan layar */
+}
+
+
+/* --- Desain Tombol Game --- */
+.btn-mulai {
+    background: linear-gradient(to bottom, #FFD700, #FF8C00);
+    color: white;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 35px;
+    letter-spacing: 2px;
+    padding: 15px 60px;
+    border: 5px solid white;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 10px 0 #D2691E, 0 15px 25px rgba(0,0,0,0.4);
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.3);
+    z-index: 10; /* Biar tombol selalu di depan awan */
+    
+    /* REVISI: Memanggil animasi napas/gerak-gerak */
+    animation: tombolNapas 1.5s infinite alternate;
+}
+
+/* Efek saat tombol ditekan */
+.btn-mulai:active {
+    transform: translateY(10px) scale(0.95);
+    box-shadow: 0 0 0 #D2691E, 0 5px 10px rgba(0,0,0,0.4);
+    animation: none; /* Matikan animasi napas saat sedang diklik */
+}
+
+/* Kunci Animasi Tombol Gerak (Napas) */
+@keyframes tombolNapas {
+    from { transform: scale(1); }
+    to { transform: scale(1.05); } /* Tombol membesar 5% secara halus */
+}
