@@ -12,51 +12,68 @@ body {
     width: 100vw;
     height: 100vh;
     background-size: cover;
-    background-position: center bottom;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    /* REVISI: Mengubah jarak tombol agar tidak terpotong di bawah */
-    padding-bottom: 12vh; 
-    position: relative; /* Penting biar awannya nempel di dalam scene ini */
+    /* REVISI: Ubah fokus gambar ke tengah-atas biar judul nggak kepotong */
+    background-position: center top; 
+    position: relative; 
 }
 
-/* --- Desain Animasi Awan Tipis --- */
+/* --- Desain Awan Gumpalan --- */
 .awan {
     position: absolute;
-    background: rgba(255, 255, 255, 0.6); /* Warna putih transparan */
+    background: rgba(255, 255, 255, 0.7); /* Sedikit lebih transparan */
     border-radius: 100px;
-    filter: blur(8px); /* Bikin awannya agak ngeblur biar keliatan tipis & natural */
-    z-index: 1; /* Pastikan awan ada di belakang tombol */
+    z-index: 1;
 }
 
+.awan::before, .awan::after {
+    content: '';
+    position: absolute;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+}
+
+/* REVISI POSISI AWAN: Dipindah ke atas semua biar nggak kena muka */
+/* Awan 1 (Kecil) - Terbang di area sayap kiri */
 .awan-1 {
-    width: 300px; height: 60px;
-    top: 15%; left: -300px;
-    animation: gerakAwan 25s linear infinite; /* Gerak pelan 25 detik */
+    width: 120px; height: 40px;
+    top: 25%; left: -200px;
+    animation: gerakAwan 30s linear infinite;
 }
+.awan-1::before { width: 50px; height: 50px; top: -20px; left: 15px; }
+.awan-1::after { width: 70px; height: 70px; top: -30px; right: 15px; }
 
+/* Awan 2 (Sedang) - Terbang di dekat judul atas */
 .awan-2 {
-    width: 200px; height: 50px;
-    top: 30%; left: -200px;
-    animation: gerakAwan 35s linear infinite 10s; /* Mulai agak telat */
+    width: 150px; height: 50px;
+    top: 8%; left: -250px;
+    animation: gerakAwan 40s linear infinite 5s; 
 }
+.awan-2::before { width: 60px; height: 60px; top: -25px; left: 20px; }
+.awan-2::after { width: 80px; height: 80px; top: -40px; right: 20px; }
 
+/* Awan 3 (Besar) - Terbang di bawah perut pesawat */
 .awan-3 {
-    width: 400px; height: 80px;
-    top: 10%; left: -400px;
-    animation: gerakAwan 40s linear infinite 5s;
+    width: 180px; height: 60px;
+    top: 35%; left: -350px;
+    animation: gerakAwan 45s linear infinite 15s;
 }
+.awan-3::before { width: 70px; height: 70px; top: -30px; left: 25px; }
+.awan-3::after { width: 100px; height: 100px; top: -50px; right: 25px; }
 
-/* Kunci Animasi Awan Berjalan dari kiri ke kanan */
 @keyframes gerakAwan {
-    from { transform: translateX(0); }
-    to { transform: translateX(120vw); } /* Tembus sampai lewat ujung kanan layar */
+    from { margin-left: 0; }
+    to { margin-left: 120vw; }
 }
 
 
 /* --- Desain Tombol Game --- */
 .btn-mulai {
+    position: absolute;
+    bottom: 8%; /* Posisi diturunkan sedikit biar pas di gumpalan awan asli */
+    left: 0; right: 0; 
+    margin-left: auto; margin-right: auto;
+    width: max-content;
+    
     background: linear-gradient(to bottom, #FFD700, #FF8C00);
     color: white;
     font-family: 'Fredoka', sans-serif;
@@ -68,21 +85,18 @@ body {
     cursor: pointer;
     box-shadow: 0 10px 0 #D2691E, 0 15px 25px rgba(0,0,0,0.4);
     text-shadow: 2px 2px 0px rgba(0,0,0,0.3);
-    z-index: 10; /* Biar tombol selalu di depan awan */
+    z-index: 10;
     
-    /* REVISI: Memanggil animasi napas/gerak-gerak */
     animation: tombolNapas 1.5s infinite alternate;
 }
 
-/* Efek saat tombol ditekan */
 .btn-mulai:active {
-    transform: translateY(10px) scale(0.95);
+    bottom: calc(8% - 10px);
     box-shadow: 0 0 0 #D2691E, 0 5px 10px rgba(0,0,0,0.4);
-    animation: none; /* Matikan animasi napas saat sedang diklik */
+    animation: none;
 }
 
-/* Kunci Animasi Tombol Gerak (Napas) */
 @keyframes tombolNapas {
     from { transform: scale(1); }
-    to { transform: scale(1.05); } /* Tombol membesar 5% secara halus */
+    to { transform: scale(1.05); }
 }
