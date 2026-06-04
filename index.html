@@ -44,6 +44,32 @@
         <img src="pesawat-keren.png" alt="Pesawat Kapten Cilik" class="pesawat-animasi-img">
     </div>  
 
+    <div id="scene-3" class="scene hidden" style="background-image: url('backgroundscene3.jpeg');">
+        <div class="glass-panel panel-besar">
+            <h2 class="judul-scene">Persiapan Seragam, <span id="nama-kapten-display">Kapten</span>!</h2>
+            <h3 class="sub-judul">Klik titik berkedip pada seragam untuk belajar fungsinya:</h3>
+
+            <div class="wadah-hotspot">
+                <img id="gambar-avatar-scene3" src="Gambar_Hanun.jpeg" alt="Avatar Pilot">
+                
+                <button class="pin-hotspot belum" id="btn-topi" onclick="klikAtribut('topi')"></button>
+                <button class="pin-hotspot belum" id="btn-wing" onclick="klikAtribut('wing')"></button>
+                <button class="pin-hotspot belum" id="btn-epaulet" onclick="klikAtribut('epaulet')"></button>
+                <button class="pin-hotspot belum" id="btn-dasi" onclick="klikAtribut('dasi')"></button>
+            </div>
+
+            <button id="btn-lanjut-scene3" class="btn-lanjut hidden" style="margin-top: 20px;" onclick="pindahScene(4)">Menuju Pesawat!</button>
+        </div>
+
+        <div id="popup-atribut" class="popup-overlay hidden">
+            <div class="popup-content">
+                <h2 id="popup-judul">Nama Atribut</h2>
+                <p id="popup-teks">Penjelasan singkat akan muncul di sini.</p>
+                <button class="btn-tutup-popup" onclick="tutupPopup()">Mengerti, Kapten!</button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

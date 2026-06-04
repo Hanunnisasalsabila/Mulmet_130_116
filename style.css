@@ -255,25 +255,125 @@ body {
     transition: background 0.6s ease-in-out;
 }
 
+/* ==========================================
+            DESAIN SCENE 3 (HOTSPOT & POP-UP)
+========================================== */
+.panel-besar {
+    width: 600px; /* Dikecilkan sedikit karena tombolnya hilang, sisa gambar saja */
+}
+
+/* Wadah Gambar agar titik posisinya bisa menempel akurat */
+.wadah-hotspot {
+    position: relative;
+    width: 300px; /* Sesuaikan dengan lebar gambar Hanun */
+    height: 450px;
+    margin: 0 auto;
+    border-radius: 20px;
+    border: 5px solid white;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    overflow: hidden;
+}
+
+.wadah-hotspot img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Agar gambarnya tidak terpotong */
+    background-color: #E3F2FD;
+}
+
+/* Desain Titik Hotspot */
+.pin-hotspot {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 3px solid white;
+    cursor: pointer;
+    z-index: 5;
+    transition: all 0.3s ease;
+}
+
+/* POSISI TITIK (KAMI PERKIRAKAN, NANTI KAMU GESER ANGKA TOP & LEFT-NYA AGAR PAS DENGAN GAMBARNYA) */
+#btn-topi { top: 10%; left: 45%; }
+#btn-epaulet { top: 35%; left: 20%; }
+#btn-wing { top: 40%; left: 60%; }
+#btn-dasi { top: 50%; left: 45%; }
+
+/* Logika Warna & Animasi Titik */
+.pin-hotspot.belum {
+    background-color: #ff5252; /* Merah */
+    box-shadow: 0 0 15px #ff5252;
+    animation: kedipTitik 1.5s infinite;
+}
+
+.pin-hotspot.sudah {
+    background-color: #4CAF50; /* Hijau (Sesuai aturan UCP) */
+    box-shadow: 0 0 10px #4CAF50;
+    transform: scale(0.8);
+    animation: none; /* Berhenti berkedip kalau sudah diklik */
+}
+
+@keyframes kedipTitik {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.3); opacity: 0.7; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* --- DESAIN POP-UP --- */
+.popup-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 1000;
+    opacity: 1; transition: opacity 0.3s ease;
+}
+
+.popup-overlay.hidden {
+    opacity: 0; pointer-events: none;
+}
+
+.popup-content {
+    background: white;
+    padding: 30px; border-radius: 25px;
+    width: 400px; text-align: center;
+    border: 6px solid #2196F3;
+    transform: scale(1); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.popup-overlay.hidden .popup-content {
+    transform: scale(0.5); /* Efek pop-up memantul */
+}
+
+#popup-judul { color: #2196F3; font-size: 28px; margin-top: 0; text-transform: uppercase; }
+#popup-teks { font-size: 20px; color: #555; margin-bottom: 25px; line-height: 1.4; }
+
+.btn-tutup-popup {
+    background: #FF9800; color: white;
+    font-family: 'Fredoka', sans-serif; font-size: 20px;
+    padding: 10px 30px; border: none; border-radius: 50px;
+    cursor: pointer; box-shadow: 0 5px 0 #E65100;
+}
+.btn-tutup-popup:active { transform: translateY(5px); box-shadow: none; }
+
+/* ==========================================
+   KODE ANIMASI PESAWAT YANG TERPOTONG
+========================================== */
 .transition-overlay.active .pesawat-animasi-img {
-    opacity: 1; /* Munculkan gambar */
-    
-    /* Jalankan animasi flyUp (logika sama dengan emoji) */
+    opacity: 1; 
+    /* Jalankan animasi flyUpCartoon */
     animation: flyUpCartoon 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
-/* Keyframes animasi disesuaikan sedikit untuk gambar */
+/* Animasi pergerakan pesawat dari kiri bawah ke kanan atas */
 @keyframes flyUpCartoon {
     0% {
-        /* Mulai dari luar layar kiri bawah, mengecil */
         transform: translate(-50vw, 50vh) scale(0.5) rotate(-15deg);
     }
     50% {
-        /* Membesar di tengah layar, menukik sedikit */
         transform: translate(0, 0) scale(1.8) rotate(-10deg);
     }
     100% {
-        /* Terbang ke kanan atas keluar layar, membesar penuh */
         transform: translate(100vw, -100vh) scale(2.2) rotate(-5deg);
     }
 }
