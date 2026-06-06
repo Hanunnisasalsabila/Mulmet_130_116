@@ -151,22 +151,24 @@ body {
 }
 
 /* Panel Kaca di tengah layar */
+/* Panel Kaca di tengah layar (Responsif Full Layar) */
 .glass-panel {
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(10px);
     border-radius: 30px;
-    padding: 40px;
+    padding: 3vh 3vw;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
     border: 5px solid white;
-    width: 600px; /* Lebar kotak panel */
+    width: 95vw;  
+    height: 90vh; 
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
+    justify-content: space-evenly;
     align-items: center;
 }
-
-.judul-scene { color: #2196F3; font-size: 32px; margin-top: 0; margin-bottom: 20px;}
-.sub-judul { color: #4CAF50; font-size: 24px; margin-bottom: 15px;}
-
+.judul-scene { color: #2196F3; font-size: 5vh; margin: 0; font-weight: bold; text-align: center;}
+.sub-judul { color: #4CAF50; font-size: 3vh; margin: 0; text-align: center;}
 /* Desain Input Ketik Nama */
 .input-game {
     font-family: 'Fredoka', sans-serif;
@@ -239,10 +241,13 @@ body {
 }
 
 /* Memastikan Scene 2 posisinya tepat di tengah layar */
-#scene-2 {
+/* Memastikan Scene 2 dan 3 full layar dan isinya di tengah */
+#scene-2, #scene-3 {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100vw;
+    height: 100vh;
 }
 
 /* --- UPDATE EFEK TRANSISI PESAWAT TERBANG --- */
@@ -287,10 +292,11 @@ body {
 }
 
 /* Wadah Gambar agar titik posisinya bisa menempel akurat */
+/* Wadah Gambar menyesuaikan tinggi layar */
 .wadah-hotspot {
     position: relative;
-    width: 300px; /* Sesuaikan dengan lebar gambar Hanun */
-    height: 450px;
+    height: 60vh; 
+    aspect-ratio: 2 / 3; 
     margin: 0 auto;
     border-radius: 20px;
     border: 5px solid white;
