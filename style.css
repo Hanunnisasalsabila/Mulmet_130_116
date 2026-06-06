@@ -21,52 +21,76 @@ body {
     z-index: 1;
 }
 
-/* --- Desain Awan Gumpalan --- */
+/* --- Desain Awan Parallax (3 Layer Depth) --- */
+
+/* BASE STYLE semua awan */
 .awan {
     position: absolute;
-    background: rgba(255, 255, 255, 0.7); /* Sedikit lebih transparan */
+    background: rgba(255, 255, 255, 0.85);
     border-radius: 100px;
-    z-index: 1;
+    z-index: 2;
 }
 
 .awan::before, .awan::after {
     content: '';
     position: absolute;
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.85);
     border-radius: 50%;
 }
 
-/* REVISI POSISI AWAN: Dipindah ke atas semua biar nggak kena muka */
-/* Awan 1 (Kecil) - Terbang di area sayap kiri */
+/* LAYER 3 - Paling jauh (kecil, lambat, transparan) */
 .awan-1 {
-    width: 120px; height: 40px;
-    top: 25%; left: -200px;
-    animation: gerakAwan 30s linear infinite;
+    width: 80px; height: 28px;
+    top: 12%; left: -150px;
+    opacity: 0.5;
+    animation: gerakAwan 55s linear infinite;
 }
-.awan-1::before { width: 50px; height: 50px; top: -20px; left: 15px; }
-.awan-1::after { width: 70px; height: 70px; top: -30px; right: 15px; }
+.awan-1::before { width: 35px; height: 35px; top: -15px; left: 10px; }
+.awan-1::after  { width: 45px; height: 45px; top: -22px; right: 10px; }
 
-/* Awan 2 (Sedang) - Terbang di dekat judul atas */
+/* LAYER 2 - Tengah (sedang, kecepatan sedang) */
 .awan-2 {
-    width: 150px; height: 50px;
-    top: 8%; left: -250px;
-    animation: gerakAwan 40s linear infinite 5s; 
+    width: 140px; height: 48px;
+    top: 20%; left: -250px;
+    opacity: 0.75;
+    animation: gerakAwan 35s linear infinite 4s;
 }
-.awan-2::before { width: 60px; height: 60px; top: -25px; left: 20px; }
-.awan-2::after { width: 80px; height: 80px; top: -40px; right: 20px; }
+.awan-2::before { width: 55px; height: 55px; top: -24px; left: 18px; }
+.awan-2::after  { width: 72px; height: 72px; top: -36px; right: 18px; }
 
-/* Awan 3 (Besar) - Terbang di bawah perut pesawat */
+/* Awan tengah kedua biar lebih rame */
 .awan-3 {
-    width: 180px; height: 60px;
-    top: 35%; left: -350px;
-    animation: gerakAwan 45s linear infinite 15s;
+    width: 110px; height: 38px;
+    top: 30%; left: -200px;
+    opacity: 0.65;
+    animation: gerakAwan 40s linear infinite 18s;
 }
-.awan-3::before { width: 70px; height: 70px; top: -30px; left: 25px; }
-.awan-3::after { width: 100px; height: 100px; top: -50px; right: 25px; }
+.awan-3::before { width: 45px; height: 45px; top: -18px; left: 14px; }
+.awan-3::after  { width: 58px; height: 58px; top: -28px; right: 14px; }
+
+/* LAYER 1 - Paling depan (besar, cepat, solid) */
+/* Tambah 2 div awan baru di HTML nanti, ini CSS-nya siap dulu */
+.awan-4 {
+    width: 200px; height: 68px;
+    top: 55%; left: -350px;
+    opacity: 0.95;
+    animation: gerakAwan 18s linear infinite 2s;
+}
+.awan-4::before { width: 80px; height: 80px; top: -35px; left: 25px; }
+.awan-4::after  { width: 105px; height: 105px; top: -52px; right: 25px; }
+
+.awan-5 {
+    width: 170px; height: 58px;
+    top: 70%; left: -300px;
+    opacity: 0.9;
+    animation: gerakAwan 22s linear infinite 10s;
+}
+.awan-5::before { width: 68px; height: 68px; top: -30px; left: 22px; }
+.awan-5::after  { width: 90px; height: 90px; top: -44px; right: 22px; }
 
 @keyframes gerakAwan {
     from { margin-left: 0; }
-    to { margin-left: 120vw; }
+    to   { margin-left: 120vw; }
 }
 
 
@@ -276,4 +300,57 @@ body {
         /* Terbang ke kanan atas keluar layar, membesar penuh */
         transform: translate(100vw, -100vh) scale(2.2) rotate(-5deg);
     }
+}
+
+/* ==========================================
+   ENTRANCE ANIMATION - SCENE 2
+========================================== */
+
+/* Keyframes animasi masuk dari bawah */
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Sembunyikan elemen scene 2 dulu sebelum animasi jalan */
+#scene-2 .glass-panel {
+    animation: slideUpFade 0.6s ease forwards;
+    animation-delay: 0.3s;
+    opacity: 0; /* mulai tersembunyi */
+}
+
+#scene-2 .judul-scene {
+    animation: slideUpFade 0.5s ease forwards;
+    animation-delay: 0.5s;
+    opacity: 0;
+}
+
+#scene-2 .input-game {
+    animation: slideUpFade 0.5s ease forwards;
+    animation-delay: 0.7s;
+    opacity: 0;
+}
+
+#scene-2 .sub-judul {
+    animation: slideUpFade 0.5s ease forwards;
+    animation-delay: 0.85s;
+    opacity: 0;
+}
+
+#scene-2 .pilihan-avatar {
+    animation: slideUpFade 0.5s ease forwards;
+    animation-delay: 1s;
+    opacity: 0;
+}
+
+#scene-2 .btn-lanjut {
+    animation: slideUpFade 0.5s ease forwards;
+    animation-delay: 1.2s;
+    opacity: 0;
 }
