@@ -23,19 +23,59 @@ function pindahScene(nomorScene) {
 
     // 3. Ganti scene di belakang layar saat layar memutih penuh
     setTimeout(() => {
-        // Sembunyikan semua scene (Logika asli kamu)
+        // Sembunyikan semua scene
         let semuaScene = document.querySelectorAll('.scene');
         semuaScene.forEach(scene => {
             scene.classList.add('hidden');
-            scene.classList.remove('active'); // Pastikan status active juga dicabut
+            scene.classList.remove('active'); 
         });
 
-        // Munculkan scene yang dituju (Logika asli kamu)
+        // Munculkan scene yang dituju
         let sceneTujuan = document.getElementById('scene-' + nomorScene);
         if (sceneTujuan) {
             sceneTujuan.classList.remove('hidden');
             sceneTujuan.classList.add('active');
         }
+
+        // ==========================================
+        // LOGIKA KHUSUS SAAT MEMASUKI SCENE TERTENTU
+        // ==========================================
+        
+        // Jika masuk Scene 4 (Dialog Mentor & Jalan ke Pesawat)
+        if (nomorScene === 4) {
+            // Pasang nama Kapten di kotak dialog
+            document.getElementById('nama-kapten-scene4').innerText = namaKapten;
+            
+            // Ganti Background sesuai gender
+            const scene4 = document.getElementById('scene-4');
+            if (avatarPilihan === 'cowok') {
+                scene4.style.backgroundImage = "url('jalan_ke_pesawat_cowok.jpeg')"; 
+            } else {
+                scene4.style.backgroundImage = "url('jalan_ke_pesawat_cewek.jpeg')"; 
+            }
+            
+            // Putar audio suara mentor otomatis (buka komentar nanti jika file audio siap)
+            // const audioMentor = document.getElementById('audio-mentor-intro');
+            // if (audioMentor) { audioMentor.play(); }
+        }
+
+        // Jika masuk Scene 5 (Naik Tangga & Masuk Pesawat)
+        if (nomorScene === 5) {
+            // Ganti Background sesuai gender
+            const scene5 = document.getElementById('scene-5');
+            if (avatarPilihan === 'cowok') {
+                scene5.style.backgroundImage = "url('naik_tangga_pesawat_cowok.jpeg')"; 
+            } else {
+                scene5.style.backgroundImage = "url('naik_tangga_pesawat_cewek.jpeg')"; 
+            }
+
+            // Hapus gambar avatar full-body yang mengambang agar tidak menumpuk dengan background
+            const imgScene5 = document.getElementById('gambar-avatar-scene5');
+            if (imgScene5) {
+                imgScene5.style.display = 'none'; 
+            }
+        }
+
     }, 800); 
 
     // 4. Hilangkan layar putih transisi agar scene baru terlihat jelas
@@ -44,23 +84,19 @@ function pindahScene(nomorScene) {
         overlay.classList.remove('active');
     }, 1400);
 }
+
 // ==========================================
 // FUNGSI INTERAKSI SCENE 2
 // ==========================================
-
-// 1. FUNGSI PILIH AVATAR (Ini yang kemungkinan terhapus)
 function pilihAvatar(jenis) {
     avatarPilihan = jenis;
     
-    // Hapus efek border hijau dari dua-duanya dulu
     document.getElementById('card-cowok').classList.remove('selected');
     document.getElementById('card-cewek').classList.remove('selected');
     
-    // Tambahkan efek border hijau ke avatar yang dipilih
     document.getElementById('card-' + jenis).classList.add('selected');
 }
 
-// 2. FUNGSI CEK DATA & LANJUT KE SCENE 3
 function cekDataLanjut() {
     namaKapten = document.getElementById('input-nama').value;
     
@@ -69,75 +105,70 @@ function cekDataLanjut() {
     } else if (avatarPilihan === "") {
         alert("Pilih karakter Kapten Cewek atau Cowok dulu ya!");
     } else {
-        // Tampilkan nama user di judul Scene 3
         const namaDisplay = document.getElementById('nama-kapten-display');
         if (namaDisplay) {
             namaDisplay.innerText = namaKapten;
         }
 
-        // Tampilkan gambar full-body berdasarkan pilihan avatar di Scene 3
         const imgScene3 = document.getElementById('gambar-avatar-scene3');
         if (imgScene3) {
             if(avatarPilihan === 'cowok') {
-                imgScene3.src = "Kapten_Cowok.jpeg"; // Sesuaikan jika ada gambar full body khusus
+                imgScene3.src = "Cowok_Fullbody.jpeg"; 
             } else {
-                imgScene3.src = "Kapten_Cewek.jpeg"; // Sesuaikan jika ada gambar full body khusus
+                imgScene3.src = "Cewek_Fullbody.jpeg"; 
             }
         }
 
-        // Pindah ke Scene 3
         pindahScene(3); 
     }
 }
+
 // ==========================================
 // FUNGSI INTERAKSI SCENE 3 (HOTSPOT & POP-UP)
 // ==========================================
-
 let statusAtribut = { topi: false, wing: false, epaulet: false, dasi: false };
 
 const infoAtribut = {
     topi: {
         judul: "Topi Pilot",
-        teks: "Topi ini melindungi kepalaku dan menjadi simbol kedisiplinan seorang pilot."
+        teks: "Topi ini melindungi kepalaku dan menjadi simbol kedisiplinan seorang pilot.",
+        gambar: "topi_pilot.png"
     },
     wing: {
         judul: "Lencana Wing",
-        teks: "Lencana Wing tanda aku sudah lulus latihan terbang dan siap bertugas!"
+        teks: "Lencana Wing tanda aku sudah lulus latihan terbang dan siap bertugas!",
+        gambar: "lencana_wings.png"
     },
     epaulet: {
         judul: "Epaulet Pangkat",
-        teks: "Epaulet di pundakku menunjukkan pangkatku sebagai Kapten penerbangan."
+        teks: "Epaulet di pundakku menunjukkan pangkatku sebagai Kapten penerbangan.",
+        gambar: "epaulet.png"
     },
     dasi: {
         judul: "Dasi Rapih",
-        teks: "Dasi membuat seragamku rapi agar penumpang percaya pada kepemimpinanku."
+        teks: "Dasi membuat seragamku rapi agar penumpang percaya pada kepemimpinanku.",
+        gambar: "dasi.png"
     }
 };
 
 function klikAtribut(jenis) {
-    // 1. Isi data ke dalam Pop-up
     document.getElementById('popup-judul').innerText = infoAtribut[jenis].judul;
     document.getElementById('popup-teks').innerText = infoAtribut[jenis].teks;
+    document.getElementById('popup-gambar').src = infoAtribut[jenis].gambar;
 
-    // 2. Tampilkan Pop-up
     document.getElementById('popup-atribut').classList.remove('hidden');
 
-    // 3. Ubah warna titik indikator jadi hijau (sesuai aturan PDF)
     const tombolTitik = document.getElementById('btn-' + jenis);
     tombolTitik.classList.remove('belum');
     tombolTitik.classList.add('sudah');
 
-    // 4. Catat bahwa bagian ini sudah diklik
     statusAtribut[jenis] = true;
 }
 
 function tutupPopup() {
-    // 1. Sembunyikan Pop-up
     document.getElementById('popup-atribut').classList.add('hidden');
 
-    // 2. Cek apakah ke-4 titik sudah berwarna hijau?
     if (statusAtribut.topi && statusAtribut.wing && statusAtribut.epaulet && statusAtribut.dasi) {
-        // Jika YA, munculkan tombol "Menuju Pesawat!"
         document.getElementById('btn-lanjut-scene3').classList.remove('hidden');
     }
 }

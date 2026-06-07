@@ -249,7 +249,108 @@ body {
     width: 100vw;
     height: 100vh;
 }
+/* ==========================================
+            DESAIN SCENE 4 (DIALOG MENTOR)
+========================================== */
+#scene-4 {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Posisi di bawah layar */
+    align-items: center;
+    padding-bottom: 5vh;
+}
 
+.karakter-mentor {
+    position: absolute;
+    bottom: 25vh; /* Berdiri di belakang kotak dialog */
+    left: 10vw;
+    height: 60vh;
+    animation: slideInLeft 1s ease forwards;
+}
+
+.karakter-mentor img {
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(5px 5px 15px rgba(0,0,0,0.3));
+}
+
+.dialog-box {
+    background: rgba(255, 255, 255, 0.95);
+    border: 6px solid #2196F3;
+    border-radius: 20px;
+    width: 80vw;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    position: relative;
+    z-index: 10;
+    animation: slideUpFade 0.8s ease forwards;
+    animation-delay: 0.5s;
+    opacity: 0;
+}
+
+.nama-pembicara {
+    background: #FF9800;
+    color: white;
+    padding: 8px 25px;
+    border-radius: 15px;
+    position: absolute;
+    top: -30px;
+    left: 40px;
+    margin: 0;
+    font-size: 24px;
+    border: 4px solid white;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+}
+
+.dialog-box p {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 26px;
+    color: #333;
+    line-height: 1.5;
+    margin: 10px 0 20px 0;
+}
+
+.btn-lanjut-dialog {
+    background: linear-gradient(to bottom, #4CAF50, #2E7D32);
+    color: white;
+    border: 4px solid white;
+    padding: 10px 30px;
+    font-size: 22px;
+    font-family: 'Fredoka', sans-serif;
+    border-radius: 50px;
+    cursor: pointer;
+    float: right;
+    box-shadow: 0 5px 0 #1B5E20;
+    transition: all 0.2s;
+}
+
+.btn-lanjut-dialog:active {
+    transform: translateY(5px);
+    box-shadow: none;
+}
+
+@keyframes slideInLeft {
+    from { transform: translateX(-50vw); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* ==========================================
+            DESAIN SCENE 5 (NAIK PESAWAT)
+========================================== */
+#scene-5 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.avatar-naik-pesawat {
+    height: 40vh;
+    border-radius: 20px;
+    border: 5px solid #87CEEB;
+    margin-top: 20px;
+    background-color: #E3F2FD;
+    animation: bounce 2s infinite; /* Efek gerak naik turun santai */
+}
 /* --- UPDATE EFEK TRANSISI PESAWAT TERBANG --- */
 
 .transition-overlay {
@@ -357,6 +458,14 @@ body {
     display: flex; justify-content: center; align-items: center;
     z-index: 1000;
     opacity: 1; transition: opacity 0.3s ease;
+}
+/* Mengatur ukuran gambar di dalam pop-up */
+#popup-gambar {
+    width: 150px; /* Ukuran bisa kamu besarkan/kecilkan nanti */
+    height: auto;
+    margin: 15px auto;
+    display: block;
+    filter: drop-shadow(0px 5px 10px rgba(0,0,0,0.15)); /* Memberi efek bayangan halus */
 }
 
 .popup-overlay.hidden {

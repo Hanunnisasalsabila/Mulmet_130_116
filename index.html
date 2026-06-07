@@ -18,7 +18,6 @@
         <button class="btn-mulai" onclick="pindahScene(2)">AYO MULAI!</button>
     </div>
 
-
     <div id="scene-2" class="scene hidden" style="background-image: url('backgroundscene2.jpeg');">
         
         <div class="glass-panel">
@@ -41,18 +40,18 @@
         </div>
 
     </div>
-    <!-- Tambahkan kode ini tepat di bawah penutup </div> scene-2 -->
+
     <div id="transition-overlay" class="transition-overlay">
         <img src="pesawat-keren.png" alt="Pesawat Kapten Cilik" class="pesawat-animasi-img">
     </div>  
 
     <div id="scene-3" class="scene hidden" style="background-image: url('backgroundscene3.jpeg');">
         <div class="glass-panel panel-besar">
-            <h2 class="judul-scene">Persiapan Seragam, <span id="nama-kapten-display">Kapten</span>!</h2>
+            <h2 class="judul-scene">Persiapan Seragam Kapten <span id="nama-kapten-display"></span>!</h2>
             <h3 class="sub-judul">Klik titik berkedip pada seragam untuk belajar fungsinya:</h3>
 
             <div class="wadah-hotspot">
-                <img id="gambar-avatar-scene3" src="Gambar_Hanun.jpeg" alt="Avatar Pilot">
+                <img id="gambar-avatar-scene3" src="Cewek_Fullbody.jpeg" alt="Avatar Pilot">
                 
                 <button class="pin-hotspot belum" id="btn-topi" onclick="klikAtribut('topi')"></button>
                 <button class="pin-hotspot belum" id="btn-wing" onclick="klikAtribut('wing')"></button>
@@ -66,9 +65,44 @@
         <div id="popup-atribut" class="popup-overlay hidden">
             <div class="popup-content">
                 <h2 id="popup-judul">Nama Atribut</h2>
+                <img id="popup-gambar" src="" alt="Gambar Atribut">
                 <p id="popup-teks">Penjelasan singkat akan muncul di sini.</p>
                 <button class="btn-tutup-popup" onclick="tutupPopup()">Mengerti, Kapten!</button>
             </div>
+        </div>
+    </div>
+    <!-- ========================================== -->
+    <!-- SCENE 4: JALAN KE PESAWAT (DIALOG MENTOR) -->
+    <!-- ========================================== -->
+    <div id="scene-4" class="scene hidden" style="background-image: url('backgroundscene4.jpeg');">
+        <!-- Gambar Karakter Mentor (Posisi Kiri) -->
+        <div class="karakter-mentor">
+            <img src="Mentor.png" alt="Instruktur Penerbangan"> <!-- Siapkan gambar mentor transparan -->
+        </div>
+        
+        <!-- Kotak Dialog Visual Novel -->
+        <div class="dialog-box">
+            <h3 class="nama-pembicara">Instruktur Penerbangan</h3>
+            <p id="teks-dialog-mentor">Halo Kapten <span id="nama-kapten-scene4"></span>! Aku Instruktur Penerbanganmu hari ini. Seragammu sudah rapi, dan pesawat sudah siap di landasan. Mari kita naik dan bersiap untuk misi hari ini!</p>
+            <button class="btn-lanjut-dialog" onclick="pindahScene(5)">Siap, Mentor!</button>
+        </div>
+
+        <!-- Tempat memutar suara mentor (di-uncomment nanti jika file audio sudah ada) -->
+        <audio id="audio-mentor-intro" src="suara_mentor_intro.mp3"></audio>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- SCENE 5: NAIK & MASUK KOKPIT -->
+    <!-- ========================================== -->
+    <div id="scene-5" class="scene hidden" style="background-image: url('backgroundscene5.jpeg');">
+        <div class="glass-panel">
+            <h2 class="judul-scene">Memasuki Pesawat...</h2>
+            
+            <!-- Gambar avatar dimunculkan lagi di sini -->
+            <img id="gambar-avatar-scene5" class="avatar-naik-pesawat" src="" alt="Avatar Naik Pesawat">
+            
+            <p class="sub-judul" style="margin-top: 20px;">Waktunya duduk di kursi kemudi utama!</p>
+            <button class="btn-lanjut" onclick="pindahScene(6)">Masuk Kokpit</button>
         </div>
     </div>
 
