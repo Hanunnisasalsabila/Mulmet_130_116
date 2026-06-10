@@ -176,42 +176,25 @@
             </div>
         </div>
     </div>
-
-    <!-- ======================== SCENE 7: SABUK PENGAMAN ======================== -->
-<div id="scene-7" class="scene hidden" style="background-image: url('scene9_announcement_pegang_mic.png');">
-    <div class="instruksi-top"><b>KESELAMATAN:</b> Pasang sabuk pengamanmu! 🔗</div>
-    
-    <div class="glass-panel" style="background: rgba(255,255,255,0.6); border: 4px dashed #2196F3; margin-top: 5vh; width: 70%; padding: 30px;">
-        <h3 class="sub-judul" id="instruksi-sabuk">Tarik sabuk ke kotak gesper di kanan!</h3>
+<!-- ======================== SCENE 7: SABUK PENGAMAN ======================== -->
+    <div id="scene-7" class="scene hidden" style="background-image: url('scene9_announcement_pegang_mic.png');">
+        <div class="instruksi-top"><b>KESELAMATAN:</b> Pasang sabuk pengamanmu! 🔗</div>
         
-        <div class="seatbelt-area" style="display: flex; justify-content: space-around; align-items: center; gap: 50px;">
+        <div class="glass-panel panel-sabuk-fix">
+            <h3 class="sub-judul" id="instruksi-sabuk" style="color: #333;">Tarik sabuk ke kotak gesper!</h3>
             
-            <!-- ELEMENT YANG DITARIK -->
-            <div id="sabuk-ujung" 
-                 draggable="true" 
-                 ondragstart="drag(event)" 
-                 class="sabuk-besi" 
-                 style="cursor: grab; padding: 20px; background: #90A4AE; border-radius: 10px; color: white; font-weight: bold;">
-                 🔗 GUMPALAN SABUK
+            <div class="seatbelt-area">
+                <div id="sabuk-ujung" draggable="true" ondragstart="drag(event)" class="sabuk-besi">🔗 Tarik Sabuk</div>
+                <div id="sabuk-gesper" ondrop="drop(event)" ondragover="allowDrop(event)" class="sabuk-kunci">[ Gesper ]</div>
             </div>
-
-            <!-- KOTAK TUJUAN (GESPER) -->
-            <div id="sabuk-gesper" 
-                 ondrop="drop(event)" 
-                 ondragover="allowDrop(event)" 
-                 class="sabuk-kunci" 
-                 style="min-width: 200px; min-height: 100px; border: 4px dashed #37474F; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.1); border-radius: 15px;">
-                 [ TARUH DI SINI ]
+            
+            <!-- Container khusus tombol aksi -->
+            <div class="action-container">
+                <button id="btn-nyalakan-mesin" class="btn-aksi-kuning hidden" onclick="nyalakanMesin()">NYALAKAN MESIN 🟢</button>
+                <button id="btn-lanjut-scene7" class="btn-aksi-hijau hidden" onclick="pindahScene(8)">Siap Terbang! ✈️</button>
             </div>
-
-        </div>
-        
-        <div id="container-tombol-lanjut" style="margin-top: 30px;">
-            <button id="btn-nyalakan-mesin" class="btn-mulai hidden" style="position:static;" onclick="nyalakanMesin()">NYALAKAN MESIN 🟢</button>
-            <button id="btn-lanjut-scene7" class="btn-lanjut hidden" style="position:static;" onclick="pindahScene(8)">Lapor Menara Kontrol ▶</button>
         </div>
     </div>
-</div>
 
     <!-- ======================== SCENE 8: MENARA KONTROL ======================== -->
     <div id="scene-8" class="scene hidden" style="background-color: #87CEEB;">

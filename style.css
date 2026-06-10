@@ -1065,3 +1065,57 @@ video {
     z-index: 999;
     position: relative;
 }
+/* Perbaikan Panel Sabuk agar tidak memotong tombol */
+.panel-sabuk-fix {
+    width: 70% !important;
+    height: auto !important; /* Biar tinggi kotak ngikutin isi */
+    max-height: 80vh;
+    padding: 40px !important;
+    margin-top: 10vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Container tombol agar rapi di bawah */
+.action-container {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* Tombol Nyalakan Mesin (Kuning) */
+.btn-aksi-kuning {
+    background: linear-gradient(#FFD700, #FF8C00);
+    color: white;
+    border: 4px solid white;
+    padding: 15px 40px;
+    font-size: 22px;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 6px 0 #D2691E;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: bold;
+}
+
+/* Tombol Siap Terbang (Hijau) */
+.btn-aksi-hijau {
+    background: linear-gradient(#4CAF50, #2E7D32);
+    color: white;
+    border: 4px solid white;
+    padding: 15px 40px;
+    font-size: 22px;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 6px 0 #1B5E20;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: bold;
+}
+
+.btn-aksi-kuning:active, .btn-aksi-hijau:active {
+    transform: translateY(4px);
+    box-shadow: none;
+}

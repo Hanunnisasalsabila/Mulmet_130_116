@@ -434,46 +434,26 @@ function drag(ev) {
     console.log("Sedang menarik: " + ev.target.id);
 }
 
-// 3. Saat elemen dilepas di kotak gesper
 function drop(ev) {
-    ev.preventDefault(); // Mencegah browser membuka link/file
+    ev.preventDefault();
     const data = ev.dataTransfer.getData("text");
     
-    // Cek apakah yang dilepas benar-benar sabuk-ujung
     if (data === "sabuk-ujung") {
-        console.log("SABUK TERPASANG!");
-        
-        const ujung = document.getElementById("sabuk-ujung");
-        const gesper = document.getElementById("sabuk-gesper");
-        const btnMesin = document.getElementById('btn-nyalakan-mesin');
-        const teks = document.getElementById('instruksi-sabuk');
+        document.getElementById("sabuk-ujung").style.display = "none";
+        const g = document.getElementById("sabuk-gesper");
+        g.innerHTML = "✅ SABUK TERKUNCI";
+        g.style.background = "#4CAF50";
+        g.style.color = "white";
 
-        // Hilangkan sabuk yang ditarik
-        ujung.style.display = "none";
-        
-        // Ubah tampilan gesper jadi sukses
-        gesper.innerHTML = "✅ SABUK TERKUNCI AMAN";
-        gesper.style.background = "#4CAF50";
-        gesper.style.color = "white";
-        gesper.style.borderStyle = "solid";
-        gesper.style.borderColor = "white";
-
-        // Ubah instruksi
-        teks.innerText = "Hebat! Sekarang klik tombol untuk menyalakan mesin.";
-        teks.style.color = "#1B5E20";
-
-        // Munculkan tombol nyalakan mesin
-        if (btnMesin) {
-            btnMesin.classList.remove('hidden');
-        }
-    } else {
-        console.log("Yang kamu tarik bukan sabuk!");
+        // Munculkan tombol NYALAKAN MESIN
+        document.getElementById('btn-nyalakan-mesin').classList.remove('hidden');
+        document.getElementById('instruksi-sabuk').innerText = "Hebat! Sekarang nyalakan mesin pesawat.";
     }
 }
 
-// 4. Fungsi tombol mesin
 function nyalakanMesin() {
     alert("VROOOM! Mesin pesawat sudah menderu!");
     document.getElementById('btn-nyalakan-mesin').classList.add('hidden');
+    // Munculkan tombol LANJUT
     document.getElementById('btn-lanjut-scene7').classList.remove('hidden');
 }
