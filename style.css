@@ -1,32 +1,103 @@
-/* Hilangkan margin bawaan dan cegah layar bisa di-scroll */
+/* ==========================================
+   BASE & RESET
+========================================== */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     padding: 0;
-    overflow: hidden; 
+    overflow: hidden;
     font-family: 'Fredoka', sans-serif;
     user-select: none;
-}
-
-/* Pengaturan Layar Utama */
-.scene {
+    /* Background luar — warna navy di sekeliling frame */
+    background: #1a2a5e;
+    background-image:
+        radial-gradient(ellipse at 30% 40%, #1e3a7a 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 60%, #0d1f4a 0%, transparent 60%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100vw;
     height: 100vh;
-    background-size: cover;
-    background-position: center top; 
-    position: absolute; /* Diubah jadi absolute agar scene bisa bertumpuk saat transisi */
-    top: 0;
-    left: 0;
-    transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out; /* Tambahan transisi */
-    opacity: 1;
-    z-index: 1;
 }
 
-/* --- Desain Awan Parallax (3 Layer Depth) --- */
+/* ==========================================
+   SCENE SYSTEM
+========================================== */
+.scene {
+    /* Frame "layar di dalam layar" — rasio 16:9 responsif */
+    width: min(92vw, 1100px);
+    aspect-ratio: 16 / 9;
+    max-height: 88vh;
+    background-size: cover;
+    background-position: center center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-/* BASE STYLE semua awan */
+    /* Rounded frame */
+    border-radius: 24px;
+    overflow: hidden;
+
+    /* Border + shadow frame */
+    border: 4px solid rgba(100, 160, 255, 0.6);
+    box-shadow:
+        0 0 0 6px rgba(30, 60, 130, 0.5),
+        0 24px 60px rgba(0, 0, 0, 0.55),
+        inset 0 0 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Highlight garis tipis di atas frame (efek layar) */
+.scene::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg,
+        transparent 5%,
+        rgba(255,255,255,0.55) 30%,
+        rgba(255,255,255,0.75) 50%,
+        rgba(255,255,255,0.55) 70%,
+        transparent 95%);
+    pointer-events: none;
+    z-index: 3;
+}
+
+.scene::after {
+    content: none;
+}
+
+.scene.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(1.02);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.scene.active {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* ==========================================
+   SCENE 1 — AWAN & TOMBOL MULAI
+========================================== */
+#scene-1 {
+    display: block; /* awan & tombol butuh absolute positioning */
+}
+
 .awan {
     position: absolute;
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.88);
     border-radius: 100px;
     z-index: 2;
 }
@@ -34,57 +105,27 @@ body {
 .awan::before, .awan::after {
     content: '';
     position: absolute;
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.88);
     border-radius: 50%;
 }
 
-/* LAYER 3 - Paling jauh (kecil, lambat, transparan) */
-.awan-1 {
-    width: 80px; height: 28px;
-    top: 12%; left: -150px;
-    opacity: 0.5;
-    animation: gerakAwan 55s linear infinite;
-}
+.awan-1 { width: 80px; height: 28px; top: 12%; left: -150px; opacity: 0.5; animation: gerakAwan 55s linear infinite; }
 .awan-1::before { width: 35px; height: 35px; top: -15px; left: 10px; }
 .awan-1::after  { width: 45px; height: 45px; top: -22px; right: 10px; }
 
-/* LAYER 2 - Tengah (sedang, kecepatan sedang) */
-.awan-2 {
-    width: 140px; height: 48px;
-    top: 20%; left: -250px;
-    opacity: 0.75;
-    animation: gerakAwan 35s linear infinite 4s;
-}
+.awan-2 { width: 140px; height: 48px; top: 20%; left: -250px; opacity: 0.75; animation: gerakAwan 35s linear infinite 4s; }
 .awan-2::before { width: 55px; height: 55px; top: -24px; left: 18px; }
 .awan-2::after  { width: 72px; height: 72px; top: -36px; right: 18px; }
 
-/* Awan tengah kedua biar lebih rame */
-.awan-3 {
-    width: 110px; height: 38px;
-    top: 30%; left: -200px;
-    opacity: 0.65;
-    animation: gerakAwan 40s linear infinite 18s;
-}
+.awan-3 { width: 110px; height: 38px; top: 30%; left: -200px; opacity: 0.65; animation: gerakAwan 40s linear infinite 18s; }
 .awan-3::before { width: 45px; height: 45px; top: -18px; left: 14px; }
 .awan-3::after  { width: 58px; height: 58px; top: -28px; right: 14px; }
 
-/* LAYER 1 - Paling depan (besar, cepat, solid) */
-/* Tambah 2 div awan baru di HTML nanti, ini CSS-nya siap dulu */
-.awan-4 {
-    width: 200px; height: 68px;
-    top: 55%; left: -350px;
-    opacity: 0.95;
-    animation: gerakAwan 18s linear infinite 2s;
-}
+.awan-4 { width: 200px; height: 68px; top: 55%; left: -350px; opacity: 0.95; animation: gerakAwan 18s linear infinite 2s; }
 .awan-4::before { width: 80px; height: 80px; top: -35px; left: 25px; }
 .awan-4::after  { width: 105px; height: 105px; top: -52px; right: 25px; }
 
-.awan-5 {
-    width: 170px; height: 58px;
-    top: 70%; left: -300px;
-    opacity: 0.9;
-    animation: gerakAwan 22s linear infinite 10s;
-}
+.awan-5 { width: 170px; height: 58px; top: 70%; left: -300px; opacity: 0.9; animation: gerakAwan 22s linear infinite 10s; }
 .awan-5::before { width: 68px; height: 68px; top: -30px; left: 22px; }
 .awan-5::after  { width: 90px; height: 90px; top: -44px; right: 22px; }
 
@@ -93,34 +134,37 @@ body {
     to   { margin-left: 120vw; }
 }
 
-
-/* --- Desain Tombol Game --- */
+/* ==========================================
+   TOMBOL UTAMA
+========================================== */
 .btn-mulai {
     position: absolute;
-    bottom: 8%; /* Posisi diturunkan sedikit biar pas di gumpalan awan asli */
-    left: 0; right: 0; 
-    margin-left: auto; margin-right: auto;
+    bottom: 8%;
+    left: 50%;
+    transform: translateX(-50%);
     width: max-content;
-    
     background: linear-gradient(to bottom, #FFD700, #FF8C00);
     color: white;
     font-family: 'Fredoka', sans-serif;
-    font-size: 35px;
+    font-size: clamp(22px, 4vw, 38px);
     letter-spacing: 2px;
     padding: 15px 60px;
     border: 5px solid white;
     border-radius: 50px;
     cursor: pointer;
-    box-shadow: 0 10px 0 #D2691E, 0 15px 25px rgba(0,0,0,0.4);
-    text-shadow: 2px 2px 0px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 0 #D2691E, 0 14px 28px rgba(0,0,0,0.35);
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.25);
     z-index: 10;
-    
     animation: tombolNapas 1.5s infinite alternate;
 }
 
+.btn-mulai:hover {
+    filter: brightness(1.08);
+}
+
 .btn-mulai:active {
-    bottom: calc(8% - 10px);
-    box-shadow: 0 0 0 #D2691E, 0 5px 10px rgba(0,0,0,0.4);
+    transform: translateX(-50%) translateY(10px);
+    box-shadow: 0 0 0 #D2691E, 0 4px 10px rgba(0,0,0,0.3);
     animation: none;
 }
 
@@ -129,443 +173,876 @@ body {
 }
 
 @keyframes popOut {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(0); opacity: 0; }
+    0%   { transform: translateX(-50%) scale(1); opacity: 1; }
+    50%  { transform: translateX(-50%) scale(1.2); opacity: 1; }
+    100% { transform: translateX(-50%) scale(0); opacity: 0; }
 }
 
 @keyframes tombolNapas {
-    from { transform: scale(1); }
-    to { transform: scale(1.05); }
+    from { transform: translateX(-50%) scale(1); }
+    to   { transform: translateX(-50%) scale(1.05); }
 }
 
 /* ==========================================
-            DESAIN SCENE 2 (INPUT & AVATAR)
+   TOMBOL LANJUT (HIJAU)
 ========================================== */
-
-/* Menyembunyikan scene yang belum aktif */
-.scene.hidden {
-    opacity: 0; /* Ganti display: none jadi opacity: 0 */
-    pointer-events: none; /* Mencegah tombol di scene yang sembunyi agar tidak bisa diklik */
-    transform: scale(1.05);
-}
-
-/* Panel Kaca di tengah layar */
-/* Panel Kaca di tengah layar (Responsif Full Layar) */
-.glass-panel {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(10px);
-    border-radius: 30px;
-    padding: 3vh 3vw;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    border: 5px solid white;
-    width: 95vw;  
-    height: 90vh; 
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-}
-.judul-scene { color: #2196F3; font-size: 5vh; margin: 0; font-weight: bold; text-align: center;}
-.sub-judul { color: #4CAF50; font-size: 3vh; margin: 0; text-align: center;}
-/* Desain Input Ketik Nama */
-.input-game {
-    font-family: 'Fredoka', sans-serif;
-    font-size: 24px;
-    padding: 15px;
-    width: 80%;
-    border-radius: 20px;
-    border: 4px solid #87CEEB;
-    text-align: center;
-    margin-bottom: 30px;
-    outline: none;
-    color: #333;
-    font-weight: 600;
-}
-.input-game:focus { border-color: #2196F3; }
-
-/* Desain Pilihan Avatar */
-.pilihan-avatar {
-    display: flex;
-    gap: 40px;
-    margin-bottom: 40px;
-}
-
-.avatar-card {
-    background: white;
-    padding: 10px;
-    border-radius: 25px;
-    border: 6px solid transparent; /* Border transparan buat nanti kalau diklik */
-    cursor: pointer;
-    transition: all 0.2s ease;
-    width: 180px;
-    height: 180px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-    overflow: hidden; /* Biar gambar melengkung ngikutin kotak */
-}
-
-.avatar-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 15px;
-}
-
-.avatar-card:hover { transform: translateY(-10px); }
-
-/* Jika Avatar dipilih (Efek Border Hijau) */
-.avatar-card.selected {
-    border-color: #4CAF50;
-    transform: scale(1.1);
-    box-shadow: 0 15px 25px rgba(76, 175, 80, 0.4);
-}
-
-/* Tombol Lanjut */
 .btn-lanjut {
-    background: linear-gradient(to bottom, #4CAF50, #2E7D32); /* Warna Hijau */
+    background: linear-gradient(to bottom, #4CAF50, #2E7D32);
     color: white;
     font-family: 'Fredoka', sans-serif;
-    font-size: 28px;
-    padding: 15px 50px;
+    font-size: clamp(18px, 2.5vw, 28px);
+    padding: 14px 50px;
     border: 5px solid white;
     border-radius: 50px;
     cursor: pointer;
     box-shadow: 0 8px 0 #1B5E20;
-    transition: all 0.1s ease;
+    transition: filter 0.15s ease, transform 0.1s ease, box-shadow 0.1s ease;
+    flex-shrink: 0;
 }
+
+.btn-lanjut:hover { filter: brightness(1.07); }
 
 .btn-lanjut:active {
     transform: translateY(8px);
     box-shadow: 0 0 0 #1B5E20;
 }
 
-/* Memastikan Scene 2 posisinya tepat di tengah layar */
-/* Memastikan Scene 2 dan 3 full layar dan isinya di tengah */
-#scene-2, #scene-3 {
+/* ==========================================
+   GLASS PANEL
+========================================== */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 28px;
+    padding: clamp(16px, 3vh, 32px) clamp(20px, 3vw, 40px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(255,255,255,0.6) inset;
+    border: 4px solid rgba(255,255,255,0.9);
+    width: min(92vw, 600px);
+    max-height: 94vh;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 10px;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.glass-panel::-webkit-scrollbar { display: none; }
+
+.panel-besar {
+    width: min(90vw, 680px);
+}
+
+/* ==========================================
+   TIPOGRAFI
+========================================== */
+.judul-scene {
+    color: #1976D2;
+    font-size: clamp(22px, 4.5vh, 38px);
+    margin: 0;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.2;
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.8);
+}
+
+.sub-judul {
+    color: #388E3C;
+    font-size: clamp(14px, 2.5vh, 22px);
+    margin: 0;
+    text-align: center;
+    line-height: 1.4;
+}
+
+/* ==========================================
+   SCENE 2 — INPUT & AVATAR
+========================================== */
+#scene-2 { display: flex; }
+
+.input-game {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(16px, 2.5vh, 24px);
+    padding: 14px 20px;
+    width: 85%;
+    border-radius: 20px;
+    border: 3px solid #87CEEB;
+    text-align: center;
+    outline: none;
+    color: #333;
+    font-weight: 600;
+    background: rgba(255,255,255,0.95);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.input-game:focus {
+    border-color: #2196F3;
+    box-shadow: 0 0 0 4px rgba(33, 150, 243, 0.15);
+}
+
+.pilihan-avatar {
+    display: flex;
+    gap: clamp(20px, 4vw, 50px);
+    justify-content: center;
+}
+
+.avatar-card {
+    background: white;
+    padding: 8px;
+    border-radius: 22px;
+    border: 5px solid transparent;
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    width: clamp(120px, 18vw, 180px);
+    height: clamp(120px, 18vw, 180px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    overflow: hidden;
+}
+
+.avatar-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 14px;
+}
+
+.avatar-card:hover { transform: translateY(-8px); box-shadow: 0 14px 28px rgba(0,0,0,0.18); }
+
+.avatar-card.selected {
+    border-color: #4CAF50;
+    transform: scale(1.08) translateY(-4px);
+    box-shadow: 0 14px 30px rgba(76, 175, 80, 0.4);
+}
+
+/* Entrance animations scene 2 */
+@keyframes slideUpFade {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+#scene-2 .glass-panel          { animation: slideUpFade 0.6s ease forwards; animation-delay: 0.2s; opacity: 0; }
+#scene-2 .judul-scene           { animation: slideUpFade 0.5s ease forwards; animation-delay: 0.4s; opacity: 0; }
+#scene-2 .input-game            { animation: slideUpFade 0.5s ease forwards; animation-delay: 0.55s; opacity: 0; }
+#scene-2 .sub-judul             { animation: slideUpFade 0.5s ease forwards; animation-delay: 0.7s; opacity: 0; }
+#scene-2 .pilihan-avatar        { animation: slideUpFade 0.5s ease forwards; animation-delay: 0.85s; opacity: 0; }
+#scene-2 .btn-lanjut            { animation: slideUpFade 0.5s ease forwards; animation-delay: 1s; opacity: 0; }
+
+/* ==========================================
+   SCENE 3 — HOTSPOT SERAGAM
+========================================== */
+#scene-3 { display: flex; }
+
+.wadah-hotspot {
+    position: relative;
+    height: clamp(200px, 52vh, 420px);
+    aspect-ratio: 2 / 3;
+    margin: 0 auto;
+    border-radius: 18px;
+    border: 4px solid rgba(255,255,255,0.9);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    overflow: hidden;
+    background: #E3F2FD;
+}
+
+.wadah-hotspot img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.pin-hotspot {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 3px solid white;
+    cursor: pointer;
+    z-index: 5;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* posisi pin scene-3 diatur via inline style di HTML agar mudah di-tweak */
+
+.pin-hotspot.belum {
+    background-color: #F44336;
+    box-shadow: 0 0 0 3px rgba(244,67,54,0.3), 0 0 16px rgba(244,67,54,0.6);
+    animation: kedipTitik 1.5s infinite;
+}
+
+.pin-hotspot.sudah {
+    background-color: #4CAF50;
+    box-shadow: 0 0 0 3px rgba(76,175,80,0.3), 0 0 12px rgba(76,175,80,0.5);
+    transform: scale(0.85);
+    animation: none;
+}
+
+@keyframes kedipTitik {
+    0%   { transform: scale(1); opacity: 1; }
+    50%  { transform: scale(1.35); opacity: 0.65; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* ==========================================
+   POP-UP ATRIBUT
+========================================== */
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100vw;
-    height: 100vh;
+    z-index: 1000;
+    transition: opacity 0.25s ease;
+    backdrop-filter: blur(3px);
 }
+
+.popup-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.popup-content {
+    background: white;
+    padding: 30px 32px;
+    border-radius: 24px;
+    width: min(420px, 90vw);
+    text-align: center;
+    border: 5px solid #2196F3;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+    transform: scale(1);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.popup-overlay.hidden .popup-content {
+    transform: scale(0.6);
+}
+
+#popup-judul, #popup-judul-kokpit {
+    color: #1976D2;
+    font-size: clamp(20px, 3vw, 28px);
+    margin: 0 0 8px 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#popup-teks, #popup-teks-kokpit {
+    font-size: clamp(15px, 2.2vw, 20px);
+    color: #555;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+#popup-gambar {
+    width: 130px;
+    height: auto;
+    margin: 12px auto;
+    display: block;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));
+}
+
+.btn-tutup-popup {
+    background: linear-gradient(to bottom, #FF9800, #E65100);
+    color: white;
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(16px, 2vw, 20px);
+    padding: 11px 32px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 5px 0 #BF360C;
+    transition: filter 0.15s, transform 0.1s, box-shadow 0.1s;
+}
+
+.btn-tutup-popup:hover { filter: brightness(1.08); }
+.btn-tutup-popup:active { transform: translateY(5px); box-shadow: none; }
+
 /* ==========================================
-            DESAIN SCENE 4 (DIALOG MENTOR)
+   SCENE 4 — DIALOG MENTOR
 ========================================== */
 #scene-4 {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end; /* Posisi di bawah layar */
-    align-items: center;
-    padding-bottom: 5vh;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+    padding-bottom: 6vh;
+    padding-left: 4vw;
+    padding-right: 4vw;
+    gap: 0;
 }
 
 .karakter-mentor {
-    position: absolute;
-    bottom: 25vh; /* Berdiri di belakang kotak dialog */
-    left: 10vw;
-    height: 60vh;
-    animation: slideInLeft 1s ease forwards;
+    /* Di luar .scene, overlay di atas frame supaya tidak kepotong */
+    position: fixed;
+    /* sejajar dengan bagian bawah frame — bottom frame ada di 50vh + setengah tinggi frame */
+    /* posisi mengikuti frame 16:9 yang responsif */
+    bottom: calc(50vh - min(44vh, min(46vw, 309px)));
+    left: calc(50vw - min(46vw, 550px) + 10px);
+    height: clamp(280px, min(70vh, 60vw * 9/16 * 1.6), 540px);
+    z-index: 50;                                  /* di atas scene (z-index:1) tapi di bawah overlay transisi (z-index:100) */
+    pointer-events: none;
+    animation: slideInLeft 0.8s ease forwards;
 }
 
 .karakter-mentor img {
     height: 100%;
     object-fit: contain;
-    filter: drop-shadow(5px 5px 15px rgba(0,0,0,0.3));
+    filter: drop-shadow(4px 8px 18px rgba(0,0,0,0.4));
+}
+
+@keyframes slideInLeft {
+    from { transform: translateX(-40vw); opacity: 0; }
+    to   { transform: translateX(0); opacity: 1; }
 }
 
 .dialog-box {
-    background: rgba(255, 255, 255, 0.95);
-    border: 6px solid #2196F3;
+    background: rgba(255, 255, 255, 0.97);
+    border: 5px solid #2196F3;
     border-radius: 20px;
-    width: 80vw;
-    padding: 30px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    width: min(72vw, 820px);
+    padding: 32px 36px 24px;
+    box-shadow: 0 12px 36px rgba(0,0,0,0.22);
     position: relative;
     z-index: 10;
-    animation: slideUpFade 0.8s ease forwards;
-    animation-delay: 0.5s;
+    animation: slideUpFade 0.7s ease forwards;
+    animation-delay: 0.4s;
     opacity: 0;
 }
 
 .nama-pembicara {
     background: #FF9800;
     color: white;
-    padding: 8px 25px;
-    border-radius: 15px;
+    padding: 7px 22px;
+    border-radius: 14px;
     position: absolute;
-    top: -30px;
-    left: 40px;
+    top: -26px;
+    left: 30px;
     margin: 0;
-    font-size: 24px;
+    font-size: clamp(16px, 2.5vw, 22px);
     border: 4px solid white;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+    white-space: nowrap;
 }
 
 .dialog-box p {
     font-family: 'Fredoka', sans-serif;
-    font-size: 26px;
+    font-size: clamp(16px, 2.8vw, 24px);
     color: #333;
-    line-height: 1.5;
-    margin: 10px 0 20px 0;
+    line-height: 1.55;
+    margin: 8px 0 18px 0;
 }
 
 .btn-lanjut-dialog {
     background: linear-gradient(to bottom, #4CAF50, #2E7D32);
     color: white;
     border: 4px solid white;
-    padding: 10px 30px;
-    font-size: 22px;
+    padding: 10px 28px;
+    font-size: clamp(16px, 2vw, 22px);
     font-family: 'Fredoka', sans-serif;
     border-radius: 50px;
     cursor: pointer;
     float: right;
     box-shadow: 0 5px 0 #1B5E20;
-    transition: all 0.2s;
+    transition: filter 0.15s, transform 0.1s, box-shadow 0.1s;
+    clear: both;
 }
 
-.btn-lanjut-dialog:active {
-    transform: translateY(5px);
-    box-shadow: none;
-}
-
-@keyframes slideInLeft {
-    from { transform: translateX(-50vw); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-}
+.btn-lanjut-dialog:hover { filter: brightness(1.08); }
+.btn-lanjut-dialog:active { transform: translateY(5px); box-shadow: none; }
 
 /* ==========================================
-            DESAIN SCENE 5 (NAIK PESAWAT)
+   SCENE 5 — NAIK PESAWAT
 ========================================== */
 #scene-5 {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-end;
     align-items: center;
+    padding-bottom: 5vh;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color: #87CEEB; /* warna isian sisi kosong, sesuaiin sama warna langit gambarnya */
 }
 
-.avatar-naik-pesawat {
-    height: 40vh;
-    border-radius: 20px;
-    border: 5px solid #87CEEB;
-    margin-top: 20px;
-    background-color: #E3F2FD;
-    animation: bounce 2s infinite; /* Efek gerak naik turun santai */
+.dialog-ceper {
+    padding: 18px 28px 14px;
+    margin-bottom: 0;
+    width: min(88vw, 720px);
 }
-/* --- UPDATE EFEK TRANSISI PESAWAT TERBANG --- */
 
+.dialog-ceper p {
+    font-size: clamp(16px, 2.6vw, 24px);
+    margin: 8px 0 12px 0;
+}
+
+/* ==========================================
+   TRANSISI PESAWAT
+========================================== */
 .transition-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: rgba(255, 255, 255, 0); /* Awalnya transparan */
+    inset: 0;
+    background: rgba(255, 255, 255, 0);
     display: flex;
     justify-content: center;
     align-items: center;
     pointer-events: none;
-    z-index: 100; /* Paling depan */
+    z-index: 100;
     transition: background 0.5s ease;
 }
 
-/* Class baru untuk gambar pesawat */
 .pesawat-animasi-img {
-    width: 200px; /* Atur ukuran gambar agar pas di layar */
-    height: auto; /* Jaga proporsi gambar */
-    
-    /* Posisi awal (sama dengan logika emoji): di luar layar kiri bawah, miring */
+    width: 200px;
+    height: auto;
     transform: translate(-100vw, 100vh) rotate(-15deg);
-    opacity: 0; /* Sembunyikan dulu */
-    transition: none; /* Jangan ada transisi saat posisi awal ditetapkan */
+    opacity: 0;
+    transition: none;
 }
 
-/* Trigger saat overlay aktif */
 .transition-overlay.active {
-    background: rgba(255, 255, 255, 1); /* Layar memutih penuh (menembus awan) */
+    background: rgba(255, 255, 255, 1);
     transition: background 0.6s ease-in-out;
 }
 
-/* ==========================================
-            DESAIN SCENE 3 (HOTSPOT & POP-UP)
-========================================== */
-.panel-besar {
-    width: 600px; /* Dikecilkan sedikit karena tombolnya hilang, sisa gambar saja */
-}
-
-/* Wadah Gambar agar titik posisinya bisa menempel akurat */
-/* Wadah Gambar menyesuaikan tinggi layar */
-.wadah-hotspot {
-    position: relative;
-    height: 60vh; 
-    aspect-ratio: 2 / 3; 
-    margin: 0 auto;
-    border-radius: 20px;
-    border: 5px solid white;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    overflow: hidden;
-}
-
-.wadah-hotspot img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* Agar gambarnya tidak terpotong */
-    background-color: #E3F2FD;
-}
-
-/* Desain Titik Hotspot */
-.pin-hotspot {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: 3px solid white;
-    cursor: pointer;
-    z-index: 5;
-    transition: all 0.3s ease;
-}
-
-/* POSISI TITIK (KAMI PERKIRAKAN, NANTI KAMU GESER ANGKA TOP & LEFT-NYA AGAR PAS DENGAN GAMBARNYA) */
-#btn-topi { top: 10%; left: 45%; }
-#btn-epaulet { top: 35%; left: 20%; }
-#btn-wing { top: 40%; left: 60%; }
-#btn-dasi { top: 50%; left: 45%; }
-
-/* Logika Warna & Animasi Titik */
-.pin-hotspot.belum {
-    background-color: #ff5252; /* Merah */
-    box-shadow: 0 0 15px #ff5252;
-    animation: kedipTitik 1.5s infinite;
-}
-
-.pin-hotspot.sudah {
-    background-color: #4CAF50; /* Hijau (Sesuai aturan UCP) */
-    box-shadow: 0 0 10px #4CAF50;
-    transform: scale(0.8);
-    animation: none; /* Berhenti berkedip kalau sudah diklik */
-}
-
-@keyframes kedipTitik {
-    0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.3); opacity: 0.7; }
-    100% { transform: scale(1); opacity: 1; }
-}
-
-/* --- DESAIN POP-UP --- */
-.popup-overlay {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100vh;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex; justify-content: center; align-items: center;
-    z-index: 1000;
-    opacity: 1; transition: opacity 0.3s ease;
-}
-/* Mengatur ukuran gambar di dalam pop-up */
-#popup-gambar {
-    width: 150px; /* Ukuran bisa kamu besarkan/kecilkan nanti */
-    height: auto;
-    margin: 15px auto;
-    display: block;
-    filter: drop-shadow(0px 5px 10px rgba(0,0,0,0.15)); /* Memberi efek bayangan halus */
-}
-
-.popup-overlay.hidden {
-    opacity: 0; pointer-events: none;
-}
-
-.popup-content {
-    background: white;
-    padding: 30px; border-radius: 25px;
-    width: 400px; text-align: center;
-    border: 6px solid #2196F3;
-    transform: scale(1); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.popup-overlay.hidden .popup-content {
-    transform: scale(0.5); /* Efek pop-up memantul */
-}
-
-#popup-judul { color: #2196F3; font-size: 28px; margin-top: 0; text-transform: uppercase; }
-#popup-teks { font-size: 20px; color: #555; margin-bottom: 25px; line-height: 1.4; }
-
-.btn-tutup-popup {
-    background: #FF9800; color: white;
-    font-family: 'Fredoka', sans-serif; font-size: 20px;
-    padding: 10px 30px; border: none; border-radius: 50px;
-    cursor: pointer; box-shadow: 0 5px 0 #E65100;
-}
-.btn-tutup-popup:active { transform: translateY(5px); box-shadow: none; }
-
-/* ==========================================
-   KODE ANIMASI PESAWAT YANG TERPOTONG
-========================================== */
 .transition-overlay.active .pesawat-animasi-img {
-    opacity: 1; 
-    /* Jalankan animasi flyUpCartoon */
+    opacity: 1;
     animation: flyUpCartoon 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
-/* Animasi pergerakan pesawat dari kiri bawah ke kanan atas */
 @keyframes flyUpCartoon {
-    0% {
-        transform: translate(-50vw, 50vh) scale(0.5) rotate(-15deg);
-    }
-    50% {
-        transform: translate(0, 0) scale(1.8) rotate(-10deg);
-    }
-    100% {
-        transform: translate(100vw, -100vh) scale(2.2) rotate(-5deg);
-    }
+    0%   { transform: translate(-50vw, 50vh)  scale(0.5)  rotate(-15deg); }
+    50%  { transform: translate(0, 0)          scale(1.8)  rotate(-10deg); }
+    100% { transform: translate(100vw, -100vh) scale(2.2)  rotate(-5deg);  }
 }
 
 /* ==========================================
-   ENTRANCE ANIMATION - SCENE 2
+   SCENE 6 — KOKPIT
 ========================================== */
-
-/* Keyframes animasi masuk dari bawah */
-@keyframes slideUpFade {
-    from {
-        opacity: 0;
-        transform: translateY(40px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+#scene-6 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1a237e;
+    background-image: radial-gradient(ellipse at 50% 0%, #283593 0%, #0d1757 100%);
 }
 
-/* Sembunyikan elemen scene 2 dulu sebelum animasi jalan */
-#scene-2 .glass-panel {
-    animation: slideUpFade 0.6s ease forwards;
-    animation-delay: 0.3s;
-    opacity: 0; /* mulai tersembunyi */
+#scene-6 .glass-panel {
+    background: rgba(15, 25, 80, 0.82);
+    border-color: rgba(100, 160, 255, 0.5);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(100,160,255,0.2) inset;
 }
 
-#scene-2 .judul-scene {
-    animation: slideUpFade 0.5s ease forwards;
-    animation-delay: 0.5s;
-    opacity: 0;
+#scene-6 .judul-scene { color: #90CAF9; }
+#scene-6 .sub-judul   { color: #A5D6A7; }
+
+#scene-6 .wadah-hotspot {
+    width: 90%;
+    height: clamp(180px, 44vh, 380px);
+    aspect-ratio: unset;
+    background: #263238;
+    border-color: rgba(100,160,255,0.4);
 }
 
-#scene-2 .input-game {
-    animation: slideUpFade 0.5s ease forwards;
-    animation-delay: 0.7s;
-    opacity: 0;
+#scene-6 .wadah-hotspot img {
+    object-fit: cover;
 }
 
-#scene-2 .sub-judul {
-    animation: slideUpFade 0.5s ease forwards;
-    animation-delay: 0.85s;
-    opacity: 0;
+/* ==========================================
+   SCENE 7 — DRAG DROP SABUK
+========================================== */
+#scene-7 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #CFD8DC;
+    background-image: linear-gradient(135deg, #ECEFF1 0%, #B0BEC5 100%);
 }
 
-#scene-2 .pilihan-avatar {
-    animation: slideUpFade 0.5s ease forwards;
-    animation-delay: 1s;
-    opacity: 0;
+.seatbelt-area {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 90%;
+    padding: clamp(20px, 3vh, 36px) clamp(20px, 3vw, 40px);
+    background: rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+    border: 3px dashed #78909C;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
-#scene-2 .btn-lanjut {
-    animation: slideUpFade 0.5s ease forwards;
-    animation-delay: 1.2s;
-    opacity: 0;
+.sabuk-besi {
+    background: linear-gradient(135deg, #90A4AE, #607D8B);
+    color: white;
+    padding: clamp(14px, 2.5vh, 22px) clamp(18px, 3vw, 32px);
+    border-radius: 12px;
+    font-size: clamp(16px, 2.5vw, 22px);
+    font-weight: bold;
+    cursor: grab;
+    border: 4px solid rgba(255,255,255,0.4);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    font-family: 'Fredoka', sans-serif;
+}
+
+.sabuk-besi:hover { transform: scale(1.04); box-shadow: 0 10px 24px rgba(0,0,0,0.3); }
+.sabuk-besi:active { cursor: grabbing; transform: scale(0.97); }
+
+.sabuk-kunci {
+    background: linear-gradient(135deg, #37474F, #263238);
+    color: rgba(255,255,255,0.8);
+    padding: clamp(18px, 3vh, 32px) clamp(24px, 4vw, 44px);
+    border-radius: 12px;
+    font-size: clamp(16px, 2.5vw, 22px);
+    border: 4px solid rgba(255,255,255,0.15);
+    font-family: 'Fredoka', sans-serif;
+    transition: border-color 0.3s ease, background 0.3s ease;
+    min-width: 160px;
+    text-align: center;
+}
+
+.sabuk-kunci[ondrop] {
+    border-style: dashed;
+    border-color: rgba(255,255,255,0.4);
+}
+
+.sabuk-terkunci-sukses {
+    background: linear-gradient(135deg, #66BB6A, #2E7D32) !important;
+    border-color: rgba(255,255,255,0.5) !important;
+    border-style: solid !important;
+    box-shadow: 0 0 24px rgba(76,175,80,0.6) !important;
+    color: white !important;
+}
+
+/* ==========================================
+   UTILITY: HIDDEN
+========================================== */
+.hidden {
+    display: none !important;
+}
+
+/* ==========================================
+   SCROLLBAR GLOBAL
+========================================== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 3px; }
+
+/* ==========================================
+   SCENE 6 — SLIDESHOW KOKPIT
+========================================== */
+.slideshow-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+.kokpit-slide {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    animation: slideUpFade 0.4s ease forwards;
+}
+
+.kokpit-slide.aktif {
+    display: flex;
+}
+
+/* Dot indikator slide */
+.slide-indicator {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 4px;
+}
+
+.slide-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(100, 160, 255, 0.3);
+    border: 2px solid rgba(100, 160, 255, 0.5);
+    transition: background 0.3s, transform 0.3s;
+}
+
+.slide-dot.aktif {
+    background: #90CAF9;
+    transform: scale(1.3);
+    border-color: #90CAF9;
+}
+
+/* ==========================================
+   SCENE 6b — DUDUK DI KOKPIT
+========================================== */
+#scene-6b {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding-bottom: 5vh;
+    background-color: #1a1a2e;
+}
+
+.scene6b-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding-bottom: 5vh;
+}
+
+.gambar-duduk-kokpit {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+}
+
+.scene6b-dialog {
+    position: relative;
+    z-index: 10;
+}
+
+/* ==========================================
+   SCENE 6 SLIDE 0 — DIALOG KAPTEN & MENTOR
+========================================== */
+.slide-samping-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+    width: 100%;
+}
+
+.slide-foto-kecil {
+    flex: 1.2;
+    height: clamp(160px, 36vh, 300px) !important;
+    aspect-ratio: unset !important;
+    min-width: 0;
+}
+
+.dialog-kokpit-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+}
+
+.dialog-kokpit {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    animation: slideUpFade 0.35s ease forwards;
+}
+
+.dialog-kokpit.aktif {
+    display: flex;
+}
+
+.dialog-kokpit-bubble {
+    background: white;
+    border-radius: 16px;
+    padding: 14px 18px;
+    position: relative;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+.dialog-kokpit-bubble.kapten {
+    border: 3px solid #4CAF50;
+}
+
+.dialog-kokpit-bubble.mentor {
+    border: 3px solid #FF9800;
+}
+
+.dialog-nama-kecil {
+    display: inline-block;
+    font-size: clamp(12px, 1.6vw, 16px);
+    font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-bottom: 6px;
+    color: white;
+}
+
+.kapten-label  { background: #4CAF50; }
+.mentor-label  { background: #FF9800; }
+
+.dialog-kokpit-bubble p {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(13px, 1.8vw, 18px);
+    color: #333;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.btn-dialog-kokpit {
+    align-self: flex-end;
+    background: linear-gradient(to bottom, #2196F3, #1565C0);
+    color: white;
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(14px, 1.8vw, 18px);
+    padding: 9px 24px;
+    border: 3px solid white;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 5px 0 #0D47A1;
+    transition: filter 0.15s, transform 0.1s, box-shadow 0.1s;
+}
+
+.btn-dialog-kokpit:hover  { filter: brightness(1.08); }
+.btn-dialog-kokpit:active { transform: translateY(5px); box-shadow: none; }
+
+.btn-dialog-kokpit.hijau {
+    background: linear-gradient(to bottom, #4CAF50, #2E7D32);
+    box-shadow: 0 5px 0 #1B5E20;
+}
+
+/* ==========================================
+   SCENE 8 — PESAWAT STANDBY
+========================================== */
+.pesawat-standby {
+    width: 60%;
+    max-width: 500px;
+    height: auto;
+    object-fit: contain;
+    animation: pesawatNapas 2s infinite alternate ease-in-out;
+}
+
+@keyframes pesawatNapas {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-15px); }
+}
+
+/* Posisi background agar kepala Pilot kelihatan */
+#scene-8b {
+    background-position: center 5% !important;
+}
+
+/* Update Kotak Dialog Announcement */
+.announcement-panel {
+    width: 85% !important;
+    max-width: 900px !important;
+    bottom: 20px !important;
+    padding: 15px 30px !important; /* Padding dikurangi sedikit */
+    display: flex;
+    flex-direction: column;
+    height: auto; /* Biar tinggi menyesuaikan isi */
+    max-height: 45vh; /* Batas maksimal agar tidak menutupi seluruh layar */
+}
+
+#naskah-announcement, #naskah-cruising {
+    font-size: 1.1rem; /* Ukuran font dikecilkan sedikit */
+    line-height: 1.3;
+    margin-bottom: 10px;
+    overflow-y: auto; /* Jika teks sangat panjang, bisa di-scroll di dalam kotak */
+}
+
+.record-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    margin-top: auto; /* Tombol akan selalu berada di paling bawah kotak */
+}
+
+.btn-action {
+    font-family: 'Fredoka', sans-serif;
+    padding: 10px 20px;
+    border-radius: 50px;
+    border: 3px solid white;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    transition: 0.3s;
+}
+
+.rekam { background: #f44336; box-shadow: 0 4px 0 #b71c1c; }
+.rekam.recording { animation: blink 1s infinite; background: #ff0000; }
+.stop { background: #555; box-shadow: 0 4px 0 #333; }
+.putar { background: #2196F3; box-shadow: 0 4px 0 #0d47a1; }
+
+@keyframes blink {
+    from { opacity: 1; }
+    to { opacity: 0.5; }
+}
+
+.instruksi-top {
+    position: absolute;
+    top: 20px;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    padding: 8px 25px;
+    border-radius: 50px;
+    border: 2px solid white;
+    font-size: 1.1em;
+}
+
+/* Posisi background khusus scene pegang mic agar kepala pilot terlihat */
+#scene-8b, #scene-11 {
+    background-position: center 5% !important;
+    background-size: cover;
+}
+.alert-bad-weather {
+    position: absolute;
+    top: 20%;
+    background: rgba(255, 0, 0, 0.8);
+    color: white;
+    padding: 15px 40px;
+    font-size: 24px;
+    font-weight: bold;
+    border: 4px solid white;
+    border-radius: 10px;
+    animation: shake 0.5s infinite;
+    z-index: 100;
+}
+
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+}
+
+#scene-13, #scene-14 {
+    background: black; /* Agar tidak ada kilatan putih saat ganti video */
+}
+
+#scene-15 {
+    background-size: cover;
+    background-position: center 5% !important;
+}
+
+/* Pastikan video benar-benar menutupi layar frame */
+video {
+    background: black;
+}
+
+#scene-17, #scene-18 {
+    background-position: center 5% !important;
+}
+
+#scene-20, #scene-21 {
+    background-position: center 5% !important;
+}
+
+#scene-22 {
+    background-size: cover;
+    background-position: center !important;
 }
