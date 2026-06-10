@@ -1046,3 +1046,22 @@ video {
     background-size: cover;
     background-position: center !important;
 }
+
+/* Pastikan tombol yang tadinya tersembunyi benar-benar muncul saat class hidden dihapus */
+.hidden {
+    display: none !important;
+}
+
+/* Pastikan status sabuk terkunci tidak terlalu besar agar tombol di bawahnya kelihatan */
+.sabuk-terkunci-sukses {
+    background: #4CAF50 !important;
+    color: white !important;
+    font-weight: bold;
+    padding: 15px 30px !important; /* Ukuran kotak status diperkecil */
+    min-width: unset !important;
+}
+
+#container-tombol-lanjut {
+    z-index: 999;
+    position: relative;
+}
