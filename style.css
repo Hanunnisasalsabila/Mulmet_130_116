@@ -50,7 +50,6 @@ body {
     /* Border + shadow frame */
     border: 4px solid rgba(100, 160, 255, 0.6);
     box-shadow:
-        0 0 0 6px rgba(30, 60, 130, 0.5),
         0 24px 60px rgba(0, 0, 0, 0.55),
         inset 0 0 30px rgba(0, 0, 0, 0.08);
 }
@@ -92,7 +91,9 @@ body {
    SCENE 1 — AWAN & TOMBOL MULAI
 ========================================== */
 #scene-1 {
-    display: block; /* awan & tombol butuh absolute positioning */
+    display: block;
+    background-size: cover;
+    background-position: center 15%;
 }
 
 .awan {
@@ -337,9 +338,9 @@ body {
 
 .wadah-hotspot {
     position: relative;
+    width: calc(100% + 2 * clamp(20px, 3vw, 40px));
+    margin: 0 calc(-1 * clamp(20px, 3vw, 40px));
     height: clamp(200px, 52vh, 420px);
-    aspect-ratio: 2 / 3;
-    margin: 0 auto;
     border-radius: 18px;
     border: 4px solid rgba(255,255,255,0.9);
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
@@ -463,6 +464,13 @@ body {
 /* ==========================================
    SCENE 4 — DIALOG MENTOR
 ========================================== */
+#scene-4, #scene-4b {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color: #87CEEB;
+}
+
 #scene-4 {
     display: flex;
     flex-direction: row;
@@ -472,6 +480,14 @@ body {
     padding-left: 4vw;
     padding-right: 4vw;
     gap: 0;
+}
+
+#scene-4b {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding-bottom: 6vh;
 }
 
 .karakter-mentor {
@@ -502,7 +518,7 @@ body {
     background: rgba(255, 255, 255, 0.97);
     border: 5px solid #2196F3;
     border-radius: 20px;
-    width: min(72vw, 820px);
+    width: min(75%, 820px);
     padding: 32px 36px 24px;
     box-shadow: 0 12px 36px rgba(0,0,0,0.22);
     position: relative;
@@ -553,31 +569,6 @@ body {
 .btn-lanjut-dialog:hover { filter: brightness(1.08); }
 .btn-lanjut-dialog:active { transform: translateY(5px); box-shadow: none; }
 
-/* ==========================================
-   SCENE 5 — NAIK PESAWAT
-========================================== */
-#scene-5 {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    padding-bottom: 5vh;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-color: #87CEEB; /* warna isian sisi kosong, sesuaiin sama warna langit gambarnya */
-}
-
-.dialog-ceper {
-    padding: 18px 28px 14px;
-    margin-bottom: 0;
-    width: min(88vw, 720px);
-}
-
-.dialog-ceper p {
-    font-size: clamp(16px, 2.6vw, 24px);
-    margin: 8px 0 12px 0;
-}
 
 /* ==========================================
    TRANSISI PESAWAT
@@ -642,12 +633,15 @@ body {
     width: 90%;
     height: clamp(180px, 44vh, 380px);
     aspect-ratio: unset;
-    background: #263238;
-    border-color: rgba(100,160,255,0.4);
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 12px;
 }
 
 #scene-6 .wadah-hotspot img {
     object-fit: cover;
+    border-radius: 12px;
 }
 
 /* ==========================================
@@ -831,6 +825,14 @@ body {
     height: clamp(160px, 36vh, 300px) !important;
     aspect-ratio: unset !important;
     min-width: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 12px;
+}
+
+.slide-foto-kecil img {
+    border-radius: 12px;
 }
 
 .dialog-kokpit-wrapper {
@@ -1046,76 +1048,132 @@ video {
     background-size: cover;
     background-position: center !important;
 }
-
-/* Pastikan tombol yang tadinya tersembunyi benar-benar muncul saat class hidden dihapus */
-.hidden {
-    display: none !important;
+/* Pastikan area drag sabuk di scene 7 agak transparan dan turun */
+#scene-7 .glass-panel {
+    background: rgba(255, 255, 255, 0.6) !important;
+    border: 4px dashed #2196F3;
+    padding: 15px;
+    width: 60%;
 }
 
-/* Pastikan status sabuk terkunci tidak terlalu besar agar tombol di bawahnya kelihatan */
-.sabuk-terkunci-sukses {
-    background: #4CAF50 !important;
-    color: white !important;
-    font-weight: bold;
-    padding: 15px 30px !important; /* Ukuran kotak status diperkecil */
-    min-width: unset !important;
+.seatbelt-area {
+    transform: scale(0.9); /* Perkecil sedikit agar tidak makan tempat */
 }
-
-#container-tombol-lanjut {
-    z-index: 999;
-    position: relative;
-}
-/* Perbaikan Panel Sabuk agar tidak memotong tombol */
-.panel-sabuk-fix {
-    width: 70% !important;
-    height: auto !important; /* Biar tinggi kotak ngikutin isi */
-    max-height: 80vh;
-    padding: 40px !important;
-    margin-top: 10vh;
+/* ==========================================
+   SCENE 7b — DIALOG PESAWAT
+========================================== */
+#scene-7b {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
-    gap: 20px;
+    padding-bottom: 5vh;
 }
 
-/* Container tombol agar rapi di bawah */
-.action-container {
-    margin-top: 20px;
+.pesawat-dialog-wrapper {
     width: 100%;
+    height: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding-bottom: 5vh;
+    position: relative;
 }
 
-/* Tombol Nyalakan Mesin (Kuning) */
-.btn-aksi-kuning {
-    background: linear-gradient(#FFD700, #FF8C00);
+.pesawat-7b {
+    position: absolute;
+    bottom: 22vh;
+    left: 50%;
+    transform: translateX(-50%);
+    height: clamp(180px, 45vh, 360px);
+    object-fit: contain;
+    filter: drop-shadow(0 8px 24px rgba(0,0,0,0.3));
+    animation: pesawatMuncul 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes pesawatMuncul {
+    from { transform: translateX(-50%) scale(0.5) translateY(60px); opacity: 0; }
+    to   { transform: translateX(-50%) scale(1) translateY(0); opacity: 1; }
+}
+
+/* ==========================================
+   SCENE 4b — AVATAR KAPTEN (KANAN)
+========================================== */
+.karakter-kapten-4b {
+    position: fixed;
+    bottom: calc(50vh - min(44vh, min(46vw, 309px)));
+    right: calc(50vw - min(46vw, 550px) + 10px); /* sisi KANAN frame */
+    height: clamp(280px, min(70vh, 60vw * 9/16 * 1.6), 540px);
+    z-index: 50;
+    pointer-events: none;
+}
+
+.karakter-kapten-4b img {
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(4px 8px 18px rgba(0,0,0,0.4));
+    /* Mirror supaya menghadap ke kiri (ke arah mentor) */
+    transform: scaleX(-1);
+}
+
+@keyframes slideInRight {
+    from { transform: scaleX(-1) translateX(-40vw); opacity: 0; }
+    to   { transform: scaleX(-1) translateX(0); opacity: 1; }
+}
+/* ==========================================
+   SISTEM SCENE STANDAR (BACKGROUND PENUH)
+========================================== */
+.scene-ilustrasi {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; 
+    align-items: center;
+    background-size: cover;    
+    background-position: center bottom; 
+    background-repeat: no-repeat;
+    padding-bottom: 4vh;       
+}
+
+/* ==========================================
+   SISTEM DIALOG UNIVERSAL
+========================================== */
+.dialog-standar {
+    background: rgba(255, 255, 255, 0.96);
+    border: 5px solid #2196F3;
+    border-radius: 20px;
+    width: min(90%, 800px);
+    padding: 32px 30px 20px; 
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+    position: relative;
+    z-index: 10;
+    animation: slideUpFade 0.5s ease forwards;
+}
+
+.dialog-standar .nama-pembicara {
+    position: absolute;
+    top: -24px;
+    left: 30px;
+    background: #FF9800; 
     color: white;
+    padding: 6px 24px;
+    border-radius: 14px;
+    font-size: clamp(16px, 2.5vw, 22px);
     border: 4px solid white;
-    padding: 15px 40px;
-    font-size: 22px;
-    border-radius: 50px;
-    cursor: pointer;
-    box-shadow: 0 6px 0 #D2691E;
-    font-family: 'Fredoka', sans-serif;
-    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    margin: 0;
+    white-space: nowrap;
 }
 
-/* Tombol Siap Terbang (Hijau) */
-.btn-aksi-hijau {
-    background: linear-gradient(#4CAF50, #2E7D32);
-    color: white;
-    border: 4px solid white;
-    padding: 15px 40px;
-    font-size: 22px;
-    border-radius: 50px;
-    cursor: pointer;
-    box-shadow: 0 6px 0 #1B5E20;
+.dialog-standar p {
     font-family: 'Fredoka', sans-serif;
-    font-weight: bold;
+    font-size: clamp(16px, 2.5vw, 22px);
+    color: #333;
+    line-height: 1.5;
+    margin: 0 0 16px 0;
 }
 
-.btn-aksi-kuning:active, .btn-aksi-hijau:active {
-    transform: translateY(4px);
-    box-shadow: none;
+.dialog-standar .btn-lanjut-dialog {
+    float: right;
+    clear: both;
 }

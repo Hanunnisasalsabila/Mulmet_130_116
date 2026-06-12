@@ -89,12 +89,12 @@
         </div>
     </div>
 
-    <!-- ======================== SCENE 5: NAIK TANGGA ======================== -->
-    <div id="scene-5" class="scene hidden">
-        <div class="dialog-box dialog-ceper">
+   <!-- ======================== SCENE 5: NAIK TANGGA (TEMPLATE STANDAR) ======================== -->
+    <div id="scene-5" class="scene scene-ilustrasi hidden" style="background-image: url('naik_tangga_pesawat_cewek.png');">
+        <div class="dialog-standar">
             <h3 class="nama-pembicara" style="background: #4CAF50;">Kapten <span class="nama-placeholder"></span></h3>
             <p>"Wah, pesawatnya besar sekali! Aku akan naik tangga ini dengan tegap."</p>
-            <button class="btn-lanjut-dialog" onclick="pindahScene(6)">Masuk Kokpit</button>
+            <button class="btn-lanjut-dialog" onclick="pindahScene(6)">Masuk Kokpit ▶</button>
         </div>
     </div>
     <!-- ======================== SCENE 6: PENGENALAN KOKPIT (SLIDESHOW + HOTSPOT) ======================== -->
@@ -159,6 +159,7 @@
         <div id="popup-kokpit" class="popup-overlay hidden">
             <div class="popup-content">
                 <h2 id="popup-judul-kokpit">Nama Alat</h2>
+                <img id="popup-gambar-kokpit" src="" alt="Gambar Alat" class="popup-gambar-alat">
                 <p id="popup-teks-kokpit">Penjelasan alat.</p>
                 <button class="btn-tutup-popup" onclick="tutupPopupKokpit()">Paham, Mentor!</button>
             </div>
