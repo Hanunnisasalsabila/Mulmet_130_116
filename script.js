@@ -11,7 +11,7 @@ function pindahScene(nomorScene) {
     const btnMulai = document.querySelector('.btn-mulai');
 
     // Scene tanpa transisi animasi pesawat terbang
-    const tanpaTransisi = [8, '8b', 9, 10, 11, 12, 13].includes(nomorScene);
+    const tanpaTransisi = [8, '8b', '8v', 9, 10, 11, 12, 13, '4b'].includes(nomorScene);
 
     if (nomorScene === 2 && btnMulai) btnMulai.classList.add('clicked');
 
@@ -45,42 +45,39 @@ function pindahScene(nomorScene) {
             const mentorImg = document.getElementById('karakter-mentor-overlay-fix');
             if (mentorImg) mentorImg.style.display = (nomorScene === 4) ? 'block' : 'none';
             
-            const target = document.getElementById('scene-' + nomorScene);
-            target.style.backgroundImage = (avatarPilihan === 'cowok') 
-                ? "url('jalan_ke_pesawat_cowok.jpeg')" 
-                : "url('jalan_ke_pesawat_cewek2.jpeg')";
+            const targetScene = document.getElementById('scene-' + nomorScene);
+            targetScene.style.backgroundImage = (avatarPilihan === 'cowok') ? "url('jalan_ke_pesawat_cowok.jpeg')" : "url('jalan_ke_pesawat_cewek2.jpeg')";
+            targetScene.style.backgroundPosition = "center 5%";
+        }
+
+        // Scene 5 (Naik Tangga)
+        if (nomorScene === 5) {
+            target.style.backgroundImage = `url('naik_tangga_pesawat_${avatarPilihan}.png')`;
             target.style.backgroundPosition = "center 5%";
         }
 
-        if (nomorScene === 5) {
-            target.style.backgroundImage = `url('naik_tangga_pesawat_${avatarPilihan}.png')`;
-        }
         if (nomorScene === 7) {
-            const scene7 = document.getElementById('scene-7');
-            scene7.style.backgroundImage = "url('scene9_announcement_pegang_mic.png')";
-            scene7.style.backgroundPosition = "center 5%";
+            target.style.backgroundPosition = "center 5%";
         }
 
-        // Scene 8 (POV Video Cockpit sebelum announcement)
-        if (nomorScene === 8) {
+        // Scene 8v (VIDEO POV KOKPIT)
+        if (nomorScene === '8v') {
             const vidPOV = document.getElementById('video-pov-takeoff');
             if (vidPOV) {
-                vidPOV.src = (avatarPilihan === 'cowok')
-                    ? 'scene8_takeoff_animasi_dalam_kokpit_cowok.mp4'
+                vidPOV.src = (avatarPilihan === 'cowok') 
+                    ? 'scene8_takeoff_animasi_dalam_kokpit_cowok.mp4' 
                     : 'scene8_takeoff_animasi_dalam_kokpit_cewek.mp4';
                 vidPOV.load();
                 vidPOV.play();
-                // SETELAH VIDEO POV SELESAI, PINDAH KE ANNOUNCEMENT (8b)
+                // OTOMATIS PINDAH KE ANNOUNCEMENT SETELAH VIDEO SELESAI
                 vidPOV.onended = () => { pindahScene('8b'); };
             }
         }
-        
-        // Scene 8b (Update ke Announcement 1)
+
+        // Scene 8b (Announcement)
         if (nomorScene === '8b') {
             resetRecordingUI();
-            const scene8b = document.getElementById('scene-8b');
-            scene8b.style.backgroundImage = "url('scene9_announcement_pegang_mic.png')";
-            scene8b.style.backgroundPosition = "center 5%";
+            target.style.backgroundPosition = "center 5%";
         }
         
         if (nomorScene === 9) {
@@ -426,24 +423,37 @@ function gantiDialogKokpit(nomor) {
     document.querySelectorAll('.dialog-kokpit').forEach(d => d.classList.remove('aktif'));
     document.getElementById('dialog-k' + nomor).classList.add('aktif');
 }
+// 1. Izinkan aksi drop (Penting!)
+function allowDrop(ev) {
+    ev.preventDefault();
+}
 
-// Drag & Drop Sabuk
-function allowDrop(ev) { ev.preventDefault(); }
-function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+// 2. Saat elemen mulai ditarik
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+    console.log("Sedang menarik: " + ev.target.id);
+}
+
 function drop(ev) {
     ev.preventDefault();
-    if (ev.dataTransfer.getData("text") === "sabuk-ujung") {
+    const data = ev.dataTransfer.getData("text");
+    
+    if (data === "sabuk-ujung") {
         document.getElementById("sabuk-ujung").style.display = "none";
         const g = document.getElementById("sabuk-gesper");
         g.innerHTML = "✅ SABUK TERKUNCI";
-        g.classList.add('sabuk-terkunci-sukses');
-        document.getElementById('instruksi-scene7').innerText = "Mantap! Nyalakan mesinnya.";
+        g.style.background = "#4CAF50";
+        g.style.color = "white";
+
+        // Munculkan tombol NYALAKAN MESIN
         document.getElementById('btn-nyalakan-mesin').classList.remove('hidden');
+        document.getElementById('instruksi-sabuk').innerText = "Hebat! Sekarang nyalakan mesin pesawat.";
     }
 }
 
 function nyalakanMesin() {
-    alert("VROOOM! Mesin Hidup!");
+    alert("VROOOM! Mesin pesawat sudah menderu!");
     document.getElementById('btn-nyalakan-mesin').classList.add('hidden');
+    // Munculkan tombol LANJUT
     document.getElementById('btn-lanjut-scene7').classList.remove('hidden');
 }
