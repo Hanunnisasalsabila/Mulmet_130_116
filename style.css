@@ -53,8 +53,80 @@ body { margin: 0; padding: 0; overflow: hidden; font-family: 'Fredoka', sans-ser
 .dialog-standar .btn-action { padding: 10px 24px; border-radius: 50px; border: 3px solid white; font-size: clamp(14px, 2vw, 18px); font-weight: 600; color: white; }
 .dialog-standar .btn-action:hover { filter: brightness(1.1); transform: scale(1.05); }
 .dialog-standar .btn-action:active { transform: scale(0.95); }
+.action-container {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 16px;
+    gap: 12px;
+}
+/* ==========================================
+   1. TOMBOL SPEAKER STANDAR (KECIL)
+   Gunakan ini untuk Kapten/Scene biasa
+========================================== */
+.btn-speaker {
+    position: absolute;
+    top: -25px;    /* Nangkring di garis atas */
+    right: 20px;   /* Di pojok kanan */
+    width: 55px;   /* Ukuran pas (tidak kebesaran) */
+    height: 55px;
+    border-radius: 50%;
+    background: #2196F3;
+    border: 4px solid white;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    z-index: 10;
+    transition: 0.2s ease;
+}
 
-.rekam { background: #f44336; box-shadow: 0 4px 0 #b71c1c; }
+.btn-speaker img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ==========================================
+   2. SPEAKER KHUSUS MENTOR (BESAR)
+   Tambahkan class 'mentor-besar' di HTML Scene 4
+========================================== */
+.btn-speaker.mentor-besar {
+    width: 170px;   /* Ukuran jumbo sesuai keinginan */
+    height: 170px;
+    top: -95px;     /* Ditarik lebih ke atas karena besar */
+    left: 80%;      /* Di tengah (atau ganti ke 30px jika mau di kiri) */
+    transform: translateX(-50%); 
+    right: auto;    /* Mematikan posisi kanan standar */
+    border: 7px solid white;
+    z-index: 50;
+}
+
+/* Penyesuaian Kotak Dialog agar teks tidak tertutup lingkaran besar */
+.dialog-mentor-besar {
+    padding-top: 90px !important; 
+}
+
+/* Animasi miring saat hover */
+.btn-speaker:hover {
+    transform: scale(1.05);
+}
+.btn-speaker.mentor-besar:hover {
+    transform: translateX(-50%) scale(1.05) rotate(-5deg);
+}
+
+/* Efek Berdenyut saat suara bunyi */
+.btn-speaker.playing {
+    animation: pulse-speaker 0.6s infinite alternate;
+    border-color: #FFD700;
+}
+@keyframes pulse-speaker {
+    from { box-shadow: 0 0 0 0 rgba(33, 150, 243, 0.5); }
+    to { box-shadow: 0 0 0 15px rgba(33, 150, 243, 0); }
+}
+.btn-speaker:active { transform: scale(0.95); }am { background: #f44336; box-shadow: 0 4px 0 #b71c1c; }
 .rekam.recording { animation: blink 1s infinite; background: #ff0000; }
 .stop { background: #555; box-shadow: 0 4px 0 #333; }
 .putar { background: #2196F3; box-shadow: 0 4px 0 #0d47a1; }
@@ -203,8 +275,64 @@ body { margin: 0; padding: 0; overflow: hidden; font-family: 'Fredoka', sans-ser
 /* Sabuk Drag Drop */
 .seatbelt-area { display: flex; justify-content: space-around; align-items: center; width: 90%; padding: 20px; background: rgba(0, 0, 0, 0.08); border-radius: 20px; border: 3px dashed #78909C; gap: 20px; }
 .sabuk-besi { background: linear-gradient(135deg, #90A4AE, #607D8B); color: white; padding: 15px 25px; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: grab; border: 4px solid rgba(255,255,255,0.4); }
-.sabuk-kunci { background: linear-gradient(135deg, #37474F, #263238); color: rgba(255,255,255,0.8); padding: 20px 35px; border-radius: 12px; font-size: 18px; border: 4px solid rgba(255,255,255,0.15); min-width: 160px; text-align: center; }
+.sabuk-kunci {
+    background: linear-gradient(135deg, #78909C, #546E7A);
+    color: rgba(255,255,255,0.85);
+    padding: 18px 35px;
+    border-radius: 16px;
+    font-size: clamp(16px, 2.5vw, 22px);
+    font-weight: 700;
+    border: 4px solid white;
+    box-shadow: 0 6px 0 #37474F, 0 10px 20px rgba(0,0,0,0.2);
+    min-width: 180px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: 0.3s ease;
+}
 
+.sabuk-kunci.terkunci {
+    background: linear-gradient(135deg, #66BB6A, #43A047);
+    color: white;
+    box-shadow: 0 6px 0 #2E7D32, 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.btn-aksi-kuning {
+    background: linear-gradient(135deg, #FFD54F, #FFA000);
+    color: #5D4037;
+    font-weight: 700;
+    font-size: clamp(16px, 2.5vw, 22px);
+    padding: 14px 36px;
+    border: 4px solid white;
+    border-radius: 50px;
+    box-shadow: 0 6px 0 #E65100, 0 10px 20px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: 0.2s ease;
+    animation: tombolNapas 1.5s infinite alternate;
+}
+.btn-aksi-kuning:hover { filter: brightness(1.08); transform: translateY(-2px); }
+.btn-aksi-kuning:active { transform: translateY(4px); box-shadow: 0 2px 0 #E65100; }
+
+.btn-aksi-hijau {
+    background: linear-gradient(135deg, #4CAF50, #2E7D32);
+    color: white;
+    font-weight: 700;
+    font-size: clamp(16px, 2.5vw, 22px);
+    padding: 14px 36px;
+    border: 4px solid white;
+    border-radius: 50px;
+    box-shadow: 0 6px 0 #1B5E20, 0 10px 20px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+.sabuk-kunci i, .btn-aksi-kuning i, .btn-aksi-hijau i {
+    font-size: 1.2em;
+    margin-right: 6px;
+}
+.btn-aksi-hijau:hover { filter: brightness(1.08); transform: translateY(-2px); }
+.btn-aksi-hijau:active { transform: translateY(4px); box-shadow: 0 2px 0 #1B5E20; }
 /* KOKPIT SLIDESHOW DLL */
 .slideshow-wrapper { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 0; }
 .kokpit-slide { display: none; flex-direction: column; align-items: center; gap: 12px; width: 100%; animation: slideUpFade 0.4s ease forwards; }
@@ -292,7 +420,19 @@ body { margin: 0; padding: 0; overflow: hidden; font-family: 'Fredoka', sans-ser
 #scene-7 { background-color: #CFD8DC; }
 #scene-8b, #scene-11, #scene-15, #scene-17, #scene-18, #scene-20, #scene-21 { background-position: center 5% !important; }
 video, #scene-13, #scene-14 { background: black; }
-.announcement-panel { width: 85% !important; max-width: 900px !important; bottom: 20px !important; padding: 15px 30px !important; display: flex; flex-direction: column; height: auto; max-height: 45vh; }
+.announcement-panel { 
+    position: absolute !important;
+    width: 85% !important; 
+    max-width: 900px !important; 
+    bottom: 20px !important; 
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    padding: 15px 30px !important; 
+    display: flex; 
+    flex-direction: column; 
+    height: auto; 
+    max-height: 45vh;
+}
 .pesawat-standby { width: 60%; max-width: 500px; height: auto; object-fit: contain; animation: pesawatNapas 2s infinite alternate ease-in-out; }
 @keyframes pesawatNapas { 0% { transform: translateY(0); } 100% { transform: translateY(-15px); } }
 /* ==========================================
@@ -369,4 +509,309 @@ video, #scene-13, #scene-14 { background: black; }
 }
 .fade-black-overlay.active {
     opacity: 1;
+}
+.waktu-berlalu-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255,255,255,0.3);
+    backdrop-filter: blur(8px);
+    animation: fadeInOut 2.5s ease forwards;
+}
+.waktu-berlalu-teks {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(24px, 5vw, 42px);
+    font-weight: 600;
+    color: #37474F;
+    text-shadow: 0 2px 8px rgba(255,255,255,0.8);
+    text-align: center;
+    opacity: 0;
+    animation: textFadeInOut 2.5s ease forwards;
+}
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}
+@keyframes textFadeInOut {
+    0% { opacity: 0; transform: scale(0.9); }
+    20% { opacity: 1; transform: scale(1); }
+    80% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0.95); }
+}
+/* ==========================================
+   SCENE 8a — BLUR + MENTOR + MIC
+========================================== */
+.bg-blur-overlay {
+    position: absolute;
+    inset: 0;
+    backdrop-filter: blur(6px);
+    background: rgba(0,0,0,0.15);
+    z-index: 1;
+}
+
+.karakter-mentor-8a {
+    position: absolute;
+    bottom: 12%;
+    left: 0;
+    right: 0;
+    height: 75%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 5;
+    pointer-events: none;
+    animation: karakterMuncul 0.6s ease-out forwards;
+}
+
+.karakter-mentor-8a img:first-child {
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 24px rgba(0,0,0,0.3));
+}
+
+.icon-mic-overlay {
+    position: absolute;
+    bottom: 8%;
+    right: 50%;
+    transform: translateX(50%);
+    width: clamp(80px, 15vw, 140px);
+    height: auto;
+    filter: drop-shadow(0 6px 14px rgba(0,0,0,0.35));
+    animation: tombolNapas 1.5s infinite alternate;
+}
+
+.instruksi-top-bawah {
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.6);
+    color: white;
+    padding: 8px 25px;
+    border-radius: 50px;
+    border: 2px solid white;
+    font-size: 1.1em;
+    white-space: nowrap;
+    z-index: 15;
+}
+#btn-nyalakan-mesin {
+    margin-right: -57.5px;
+}
+#btn-lanjut-scene7 {
+    margin-right: 142px;
+}
+/* Elemen layar hitam untuk transisi */
+.fade-black-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black; /* Warna transisi */
+    opacity: 0; /* Awalnya transparan */
+    pointer-events: none; /* Agar tidak menghalangi klik saat transparan */
+    z-index: 99999; /* HARUS SANGAT TINGGI supaya di depan semua scene */
+    transition: opacity 0.8s ease-in-out; /* Durasi animasi */
+}
+
+/* Saat class 'active' ditambah oleh JavaScript, opacity jadi 1 (gelap) */
+.fade-black-overlay.active {
+    opacity: 1;
+    pointer-events: all; /* Menghalangi klik saat transisi jalan */
+}
+/* Definisi Gerakan: Dari Kecil (scale 0.5) ke Besar (scale 1) */
+/* ==========================================
+   REVISI ANIMASI PANEL TEKS (LEBIH LAMBAT)
+========================================== */
+
+/* REVISI: Teks hanya Fade In (Muncul), jangan ada Fade Out (Hilang) */
+@keyframes fadeInStay {
+    0% { opacity: 0; transform: scale(0.9); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+.waktu-berlalu-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255,255,255,0.3);
+    backdrop-filter: blur(8px);
+    /* Gunakan animasi baru yang tidak menghilang */
+    animation: fadeInStay 1s ease forwards; 
+}
+
+.waktu-berlalu-teks {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(24px, 5vw, 42px);
+    font-weight: 600;
+    color: #37474F;
+    text-shadow: 0 2px 8px rgba(255,255,255,0.8);
+    text-align: center;
+    /* Gunakan animasi baru yang tidak menghilang */
+    animation: fadeInStay 1s ease forwards; 
+}
+/* ==========================================
+   FIX ANIMASI PANEL (TAMBAHKAN INI)
+========================================== */
+
+@keyframes slowPopIn {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, 20px) scale(0.9); /* Tetap jaga posisi center X */
+        filter: blur(8px);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1);
+        filter: blur(0);
+    }
+}
+
+/* Selector untuk semua scene pengumuman */
+#scene-11:not(.hidden) .announcement-panel,
+#scene-15:not(.hidden) .announcement-panel,
+#scene-17:not(.hidden) .announcement-panel,
+#scene-18:not(.hidden) .announcement-panel {
+    opacity: 0;
+    display: flex !important;
+    /* Pastikan transform awal adalah translate -50% karena ada di CSS dasarnya */
+    transform: translateX(-50%); 
+    animation: slowPopIn 1.2s ease-out forwards;
+    animation-delay: 0.5s; /* Jeda sebentar saja */
+    z-index: 50; 
+}
+
+/* Fix untuk instruksi bagian atas */
+#scene-11:not(.hidden) .instruksi-top,
+#scene-15:not(.hidden) .instruksi-top,
+#scene-17:not(.hidden) .instruksi-top,
+#scene-18:not(.hidden) .instruksi-top {
+    opacity: 0;
+    animation: fadeInStay 1s ease forwards;
+    animation-delay: 0.2s;
+    z-index: 50;
+}
+/* Efek Blur & Gelap Total untuk Scene 12b */
+.super-blur-pekat {
+    filter: blur(50px) brightness(0) !important; /* Blur sangat besar & Gelap total */
+    background-color: black !important; /* Paksa background jadi hitam */
+    transition: filter 1.2s ease-in, background-color 1.2s ease-in;
+}
+
+.fade-black-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: black;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 99999; /* Pastikan ini angka tertinggi */
+    transition: opacity 1s ease-in-out;
+}
+
+.fade-black-overlay.active {
+    opacity: 1;
+}
+
+/* Pastikan Scene 12b punya dasar transisi agar tidak kaget */
+#scene-12b {
+    transition: filter 1.5s ease-in-out;
+}
+
+/* Container untuk menata posisi Headset di atas kotak */
+.mentor-mic-container {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/* Container Headset di atas kotak dialog */
+.mentor-mic-container {
+    position: absolute;
+    top: -100px; /* Tarik lebih ke atas agar tidak menabrak teks */
+    left: 40%;   /* Geser agak ke kiri supaya tidak tabrakan dengan Mentor di kanan */
+    transform: translateX(-50%);
+    z-index: 60;
+}
+
+/* Bingkai Headset (Badge) */
+.headset-badge {
+    width: 110px; 
+    height: 110px;
+    background: white;
+    border: 6px solid #2196F3; 
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    /* KUNCI: Potong gambar kotak agar mengikuti bentuk bulat */
+    overflow: hidden; 
+    animation: floatAnim 3s ease-in-out infinite;
+}
+
+/* Gambar Headset - Dibuat memenuhi lingkaran tapi dipotong otomatis */
+.img-headset {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Memaksa gambar mengisi ruang bulat */
+    transform: scale(0.8); /* Perkecil sedikit isinya agar ada jarak dengan border biru */
+}
+
+/* Speaker Mentor di Samping Kanan (Scene 8a saja) */
+#scene-8a .btn-speaker.mentor-besar {
+    right: -10px; /* Geser agak keluar kotak sedikit biar estetik */
+    left: auto;
+    transform: none;
+    top: -90px;
+    width: 150px;
+    height: 150px;
+}
+
+/* Beri ruang teks lebih besar supaya tidak terhimpit dua lingkaran */
+#scene-8a .dialog-standar {
+    padding-top: 80px !important;
+    padding-right: 140px; /* Beri ruang kosong di kanan untuk tempat Mentor */
+    min-height: 220px;
+}
+/* Hiasan cahaya di belakang headset */
+.badge-glow {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle, rgba(33, 150, 243, 0.4) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 1;
+    animation: pulseGlow 2s infinite alternate;
+}
+
+/* Animasi Mengambang */
+@keyframes floatAnim {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Animasi Cahaya Berdenyut */
+@keyframes pulseGlow {
+    from { transform: scale(0.9); opacity: 0.5; }
+    to { transform: scale(1.1); opacity: 1; }
+}
+
+/* Pastikan Tombol Speaker Mentor tetap besar di pojok kanan */
+#scene-8a .btn-speaker.mentor-besar {
+    right: 20px;
+    left: auto;
+    transform: none;
+    top: -80px;
 }
