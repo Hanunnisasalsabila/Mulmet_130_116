@@ -53,7 +53,7 @@ function pindahScene(nomorScene) {
         // Scene 5 (Naik Tangga)
         if (nomorScene === 5) {
             target.style.backgroundImage = `url('naik_tangga_pesawat_${avatarPilihan}.png')`;
-            target.style.backgroundPosition = "center 5%";
+            
         }
 
         if (nomorScene === 7) {
