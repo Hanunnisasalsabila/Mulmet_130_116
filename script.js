@@ -14,7 +14,10 @@ let audioUrl;
 function pindahScene(nomorScene) {
     const overlay = document.getElementById('transition-overlay');
     const btnMulai = document.querySelector('.btn-mulai');
-    const tanpaTransisi = [8, '8b', '8v', 9, '9', 10, 11, 12, 13, '4b', 23].includes(nomorScene);
+    const tanpaTransisi = [
+    8, '8b', 9, '9', 10, 11, 12, 13, '4b', '6b', 7, '14b', 15, 17, 18, 
+    20, 21, 22, '22b', '22c', '22d', '22e','22f', 23
+].includes(nomorScene);
     if (nomorScene === 2 && btnMulai) btnMulai.classList.add('clicked');
     if (!tanpaTransisi) setTimeout(() => { overlay.classList.add('active'); }, 200);
 
@@ -116,12 +119,12 @@ if (nomorScene == 9) {
             }
         }
         if (nomorScene === '14b') {
-    const bgImg = (avatarPilihan === 'cowok') ? 'Scene11_Pilot_Cowok_Menenangkan_Penumpang_.png' : 'Scene11_Pilot_Cewek_Menenangkan_Penumpang_part2.png';
+    const bgImg = (avatarPilihan === 'cowok') ? 'Scene11_Pilot_Cowok_Menenangkan_Penumpang_part1.png' : 'Scene11_Pilot_Cewek_Menenangkan_Penumpang_part1.png';
     target.style.backgroundImage = `url('${bgImg}')`;
 }
         if (nomorScene === 15) {
             resetRecordingUI();
-            const bgImg = (avatarPilihan === 'cowok') ? 'Scene11_Pilot_Cowok_Menenangkan_Penumpang_Part2.png' : 'Scene11_Pilot_Cewek_Menenangkan_Penumpang.png';
+            const bgImg = (avatarPilihan === 'cowok') ? 'Scene11_Pilot_Cowok_Menenangkan_Penumpang_Part2.png' : 'Scene11_Pilot_Cewek_Menenangkan_Penumpang_part2.png';
             target.style.backgroundImage = `url('${bgImg}')`;
         }
         if (nomorScene === 16) {
@@ -375,8 +378,9 @@ function putarRekaman() {
 }
 
 
+
 setTimeout(() => {
     namaKapten = "Zahwa";       
     avatarPilihan = "cewek";    
-    pindahScene('22b');          
+    pindahScene('22e');          
 }, 500);
