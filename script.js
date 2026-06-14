@@ -7,6 +7,25 @@ let mediaRecorder;
 let audioChunks = [];
 let audioBlob;
 let audioUrl;
+let currentVO = null;
+
+
+function gantiBGM(id) {
+    const bgmCeria = document.getElementById('bgm-ceria');
+    const bgmTegang = document.getElementById('bgm-tegang');
+
+    // Stop semua dulu
+    [bgmCeria, bgmTegang].forEach(bgm => {
+        if (bgm) { bgm.pause(); bgm.currentTime = 0; }
+    });
+
+    // Play yang diminta
+    const target = document.getElementById(id);
+    if (target) {
+        target.volume = 0.4;
+        target.play().catch(e => console.log("BGM gagal:", e));
+    }
+}
 
 // ==========================================
 // FUNGSI NAVIGASI SCENE UTAMA (UNIVERSAL FADE)
@@ -37,9 +56,15 @@ function pindahScene(nomorScene) {
         // ==========================================
         
         if (nomorScene === 4) {
-            const bgImg = (avatarPilihan === 'cowok') ? 'Scene4_Jalan_ke_Pesawat_Cowok.png' : 'jalan_ke_pesawat_cewek2.jpeg';
-            target.style.backgroundImage = `url('${bgImg}')`;
-        }
+    const bgImg = (avatarPilihan === 'cowok') ? 'Scene4_Jalan_ke_Pesawat_Cowok.png' : 'jalan_ke_pesawat_cewek2.jpeg';
+    target.style.backgroundImage = `url('${bgImg}')`;
+    
+    // Auto-play VO mentor scene 4
+    setTimeout(() => {
+        const vo = document.getElementById('audio-4a');
+        if (vo) { vo.currentTime = 0; vo.play().catch(e => console.log(e)); }
+    }, 500); // delay 0.5 detik biar scene sudah fully visible
+}
         if (nomorScene === '4b') {
             const bgImg = (avatarPilihan === 'cowok') ? 'Scene4_Jalan_ke_Pesawat_Cowok_Part2.png' : 'jalan_ke_pesawat_cewek.jpeg';
             target.style.backgroundImage = `url('${bgImg}')`;
@@ -48,6 +73,12 @@ function pindahScene(nomorScene) {
             const bgImg = (avatarPilihan === 'cowok') ? 'Scene5_Jalan_ditangga_pesawat_cowok.png' : 'naik_tangga_pesawat_cewek.png';
             target.style.backgroundImage = `url('${bgImg}')`;
         }
+        if (nomorScene === 6) {
+    const wajahS6 = document.getElementById('wajah-kapten-s6');
+    if (wajahS6) {
+        wajahS6.src = (avatarPilihan === 'cowok') ? 'Kapten_Cowok.jpeg' : 'Kapten_Cewek.jpeg';
+    }
+}
         if (nomorScene === '6b') {
             const bgImg = (avatarPilihan === 'cowok') ? 'Scene5_duduk_di_kokpit_cowok.png' : 'Scene5_duduk_di_kokpit_cewek.png';
             target.style.backgroundImage = `url('${bgImg}')`;
@@ -64,6 +95,11 @@ function pindahScene(nomorScene) {
         if (nomorScene === '8a') {
             const bgImg = (avatarPilihan === 'cowok') ? 'Scene5_duduk_di_kokpit_cowok.png' : 'Scene5_duduk_di_kokpit_cewek.png';
             target.style.backgroundImage = `url('${bgImg}')`;
+            // Auto-play VO mentor
+    setTimeout(() => {
+        const vo = document.getElementById('audio-8a');
+        if (vo) { vo.currentTime = 0; vo.play().catch(e => console.log(e)); }
+    }, 500);
         }
 
         // --- SCENE 9 & 10 (VIDEO OTOMATIS) ---
@@ -121,8 +157,7 @@ function pindahScene(nomorScene) {
             const vid14 = document.getElementById('video-turbulensi-kokpit');
             if (vid14) {
                 vid14.src = (avatarPilihan === 'cowok') ? 'Scene10_Dalam_Kokpit_Saat_Turbulensi_cowok.mp4' : 'Scene10_Dalam_Kokpit_Saat_Turbulensi.mp4';
-                'audio/sound turbulensi pilot cowok/suara_saat_turbulensi_pilot_cowok-drums-D minor-156bpm-441hz.mp3' ;
-            'audio/sound turbulensi pilot cewek/Scene10_Dalam_Kokpit_Saat_Turbulensi-drums-B minor-140bpm-441hz.mp3';
+                
                 vid14.load(); vid14.play();
                 vid14.onended = () => { pindahScene('14b'); };
             }
@@ -178,20 +213,7 @@ function pindahScene(nomorScene) {
         if (nomorScene === '22d') target.style.backgroundImage = "url('Scene15_Bicara_Sama_Pramugari_Part2.png')";
         if (nomorScene === '22e') target.style.backgroundImage = "url('Scene15_Bicara_Sama_Pramugari_Part3.png')";
 
-        function gantiBGM(id) {
-    const bgmCeria = document.getElementById('bgm-ceria');
-    const bgmTegang = document.getElementById('bgm-tegang');
-
-    [bgmCeria, bgmTegang].forEach(bgm => {
-        if (bgm) { bgm.pause(); bgm.currentTime = 0; }
-    });
-
-    const target = document.getElementById(id);
-    if (target) {
-        target.volume = 0.4;
-        target.play().catch(e => console.log("BGM gagal:", e));
-    }
-}
+        
         // --- SCENE 22f: VIDEO KELUAR PESAWAT (PERBAIKAN) ---
         // --- SCENE 22f: KELUAR PESAWAT (VERSI ANTI GAGAL) ---
         if (nomorScene === '22f') {
@@ -222,6 +244,7 @@ function pindahScene(nomorScene) {
             }
         }
 
+
         // --- SERTIFIKAT ---
         if (nomorScene === 23) {
             // Pastikan nama tidak kosong, jika kosong beri nama Kapten Cilik
@@ -234,19 +257,15 @@ function pindahScene(nomorScene) {
             }
         }
 
-        // Play BGM ceria dari awal
-if (nomorScene === 2) {
-    gantiBGM('bgm-ceria');
-}
-
-// Ganti tegang saat scene 13
-if (nomorScene === 13) {
-    gantiBGM('bgm-tegang');
-}
-// Balik ceria saat scene 16 (pemulihan cuaca) — bukan 17
-if (nomorScene === 16) {
-    gantiBGM('bgm-ceria');
-}
+         if (nomorScene === 2) {
+        gantiBGM('bgm-ceria'); // panggil saja, tidak mendefinisikan
+    }
+    if (nomorScene === 13) {
+        gantiBGM('bgm-tegang');
+    }
+    if (nomorScene === 16) {
+        gantiBGM('bgm-ceria');
+    }
 
         // 3. Fade In (Layar Terbuka)
         setTimeout(() => {
@@ -302,40 +321,47 @@ function aturPosisiHotspot() {
         }
     });
 }
-
 function putarVO(audioId) {
     const audio = document.getElementById(audioId);
-    if (!audio) return;
-
+    // Definisi BGM di luar agar bisa diakses di semua bagian fungsi
     const bgmCeria = document.getElementById('bgm-ceria');
     const bgmTegang = document.getElementById('bgm-tegang');
 
+    if (!audio) {
+        console.error("Audio dengan ID " + audioId + " tidak ditemukan!");
+        return;
+    }
+
+    // Stop VO lain yang sedang berjalan
     if (currentVO && currentVO !== audio) {
         currentVO.pause();
         currentVO.currentTime = 0;
         document.querySelectorAll('.btn-speaker.playing').forEach(b => b.classList.remove('playing'));
     }
 
-    const btn = audio.closest('.dialog-standar, .dialog-box')?.querySelector('.btn-speaker');
+    // Cari tombol speaker untuk animasi
+    const btn = audio.closest('.dialog-standar, .dialog-box, .dialog-kokpit-bubble, .popup-content')?.querySelector('.btn-speaker');
 
     if (audio.paused) {
-        // Kecilkan BGM saat VO mulai
+        // Kecilkan BGM saat VO bunyi
         if (bgmCeria) bgmCeria.volume = 0.1;
         if (bgmTegang) bgmTegang.volume = 0.1;
 
         audio.currentTime = 0;
-        audio.play();
+        audio.play().catch(e => console.log("Gagal memutar audio:", e));
+        
         if (btn) btn.classList.add('playing');
         currentVO = audio;
 
-        // Kembalikan volume BGM setelah VO selesai
         audio.onended = () => {
             if (btn) btn.classList.remove('playing');
+            // Kembalikan volume BGM
             if (bgmCeria) bgmCeria.volume = 0.4;
             if (bgmTegang) bgmTegang.volume = 0.4;
             currentVO = null;
         };
     } else {
+        // Jika diklik lagi saat sedang bunyi, maka stop
         audio.pause();
         audio.currentTime = 0;
         if (btn) btn.classList.remove('playing');
@@ -350,21 +376,31 @@ function putarVO(audioId) {
 let statusAtribut = { topi: false, wing: false, epaulet: false, dasi: false };
 function klikAtribut(jenis) {
     const info = {
-        topi: { judul: "Topi Pilot", teks: "Ini topi pilot! Topi ini bikin kita kelihatan gagah dan menunjukkan kalau kita adalah kapten yang siap bertugas!", gambar: "topi_pilot.png" },
-        wing: { judul: "Lencana Wing", teks: "Ini lencana wing! Lencana ini tandanya kita sudah jago terbang dan siap membawa penumpang ke tempat tujuan!", gambar: "lencana_wings.png" },
-        epaulet: { judul: "Pangkat", teks: "Ini pangkat pilot! Garis-garis di bahu ini menunjukkan kalau kita adalah kapten pesawat yang hebat!", gambar: "epaulet.png" },
-        dasi: { judul: "Dasi", teks: "Ini dasi pilot! Dasi ini bikin penampilan kita jadi rapi dan profesional!!", gambar: "dasi.png" }
+        topi:    { judul: "Topi Pilot",   teks: "Ini topi pilot! Topi ini bikin kita kelihatan gagah dan menunjukkan kalau kita adalah kapten yang siap bertugas!",           gambar: "topi_pilot.png",    audio: "audio/voiceover/vo_topi.MP3" },
+        wing:    { judul: "Lencana Wing", teks: "Ini lencana wing! Lencana ini tandanya kita sudah jago terbang dan siap membawa penumpang ke tempat tujuan!",               gambar: "lencana_wings.png", audio: "audio/voiceover/vo_wings.MP3" },
+        epaulet: { judul: "Pangkat",      teks: "Ini pangkat pilot! Garis-garis di bahu ini menunjukkan kalau kita adalah kapten pesawat yang hebat!",                       gambar: "epaulet.png",       audio: "audio/voiceover/vo_pangkat.MP3" },
+        dasi:    { judul: "Dasi",         teks: "Ini dasi pilot! Dasi ini bikin penampilan kita jadi rapi dan profesional!",                                                  gambar: "dasi.png",          audio: "audio/voiceover/vo_dasi.MP3" }
     };
-    document.getElementById('popup-judul').innerText = info[jenis].judul;
+      document.getElementById('popup-judul').innerText = info[jenis].judul;
     document.getElementById('popup-teks').innerText = info[jenis].teks;
     document.getElementById('popup-gambar').src = info[jenis].gambar;
     document.getElementById('popup-atribut').classList.remove('hidden');
     document.getElementById('btn-' + jenis).classList.replace('belum', 'sudah');
     statusAtribut[jenis] = true;
+
+    // Auto-play VO saat popup muncul
+    const audioPopup = document.getElementById('audio-popup-atribut');
+    if (audioPopup) {
+        audioPopup.src = info[jenis].audio;
+        audioPopup.currentTime = 0;
+        audioPopup.play().catch(e => console.log("VO popup gagal:", e));
+    }
 }
 
 function tutupPopup() {
     document.getElementById('popup-atribut').classList.add('hidden');
+    const audioPopup = document.getElementById('audio-popup-atribut');
+    if (audioPopup) { audioPopup.pause(); audioPopup.currentTime = 0; }
     if (Object.values(statusAtribut).every(v => v)) {
         document.getElementById('btn-lanjut-scene3').classList.remove('hidden');
     }
@@ -377,13 +413,23 @@ let statusKokpit = { mesin: false, gas: false, setir: false };
 
 function klikKokpit(jenis) {
     const info = {
-        mesin: { judul: "Engine Start", teks: "Ini tombol nyalain mesin! Kalau tombol ini ditekan, mesin pesawat akan mulai menyala dan siap untuk terbang!", gambar: "Scene6_start_engine.png" },
-        gas: { judul: "Tuas Gas", teks: "Ini tuas gas! Tuas ini kita dorong ke depan supaya pesawat bisa melaju lebih cepat!", gambar: "Scene6_tuas.png" },
-        setir: { judul: "Yoke (Setir)", teks: "Ini setir pesawat namanya yoke! Kita putar ke kiri atau kanan supaya pesawat bisa berbelok sesuai arah yang kita mau!", gambar: "Scene6_yoke.png" }
+        mesin: { judul: "Engine Start",  teks: "Ini tombol nyalain mesin! Kalau tombol ini ditekan, mesin pesawat akan mulai menyala dan siap untuk terbang!", gambar: "Scene6_start_engine.png", audio: "audio/voiceover/vo_engine_start.MP3" },
+        gas:   { judul: "Tuas Gas",      teks: "Ini tuas gas! Tuas ini kita dorong ke depan supaya pesawat bisa melaju lebih cepat!",                          gambar: "Scene6_tuas.png",        audio: "audio/voiceover/vo_tuas_gas.MP3" },
+        setir: { judul: "Yoke (Setir)",  teks: "Ini setir pesawat namanya yok! Kita putar ke kiri atau kanan supaya pesawat bisa berbelok sesuai arah yang kita mau!", gambar: "Scene6_yoke.png", audio: "audio/voiceover/vo_setir.MP3" }
     };
     document.getElementById('popup-judul-kokpit').innerText = info[jenis].judul;
     document.getElementById('popup-teks-kokpit').innerText = info[jenis].teks;
-    document.getElementById('popup-gambar-kokpit').src = info[jenis].gambar; 
+    document.getElementById('popup-gambar-kokpit').src = info[jenis].gambar;
+    
+    // Auto-play VO saat popup kokpit muncul
+const audioPopup = document.getElementById('audio-popup-kokpit');
+if (audioPopup) {
+    audioPopup.src = info[jenis].audio;
+    audioPopup.currentTime = 0;
+    audioPopup.play().catch(e => console.log("VO popup gagal:", e));
+}
+    
+    
     document.getElementById('popup-kokpit').classList.remove('hidden');
     document.getElementById('btn-' + jenis).classList.replace('belum', 'sudah');
     statusKokpit[jenis] = true;
@@ -391,6 +437,8 @@ function klikKokpit(jenis) {
 
 function tutupPopupKokpit() {
     document.getElementById('popup-kokpit').classList.add('hidden');
+    const audioPopup = document.getElementById('audio-popup-kokpit');
+    if (audioPopup) { audioPopup.pause(); audioPopup.currentTime = 0; }
     if (Object.values(statusKokpit).every(v => v)) {
         document.getElementById('btn-slide-lanjut').classList.remove('hidden');
     }
@@ -407,6 +455,20 @@ function gantiSlideKokpit(index, reset = false) {
 function gantiDialogKokpit(nomor) {
     document.querySelectorAll('.dialog-kokpit').forEach(d => d.classList.remove('aktif'));
     document.getElementById('dialog-k' + nomor).classList.add('aktif');
+    
+    // Auto-play VO saat dialog muncul
+    const audioMap = {
+        2: 'audio-k2', // mentor
+        // tambah nomor lain kalau ada dialog lain yang punya VO
+    };
+    
+    if (audioMap[nomor]) {
+        const audio = document.getElementById(audioMap[nomor]);
+        if (audio) {
+            audio.currentTime = 0;
+            audio.play().catch(e => console.log("VO auto gagal:", e));
+        }
+    }
 }
 
 // ==========================================
@@ -452,9 +514,15 @@ function resetRecordingUI() {
     const btnRekam = sceneAktif.querySelector('.rekam');
     if (btnRekam) { btnRekam.innerText = "🎤 Rekam Suara"; btnRekam.classList.remove('recording', 'hidden'); btnRekam.disabled = false; }
 }
-
 async function mulaiRekam() {
+    // Pause BGM saat mulai rekam
+    const bgmCeria = document.getElementById('bgm-ceria');
+    const bgmTegang = document.getElementById('bgm-tegang');
+    if (bgmCeria && !bgmCeria.paused) bgmCeria.pause();
+    if (bgmTegang && !bgmTegang.paused) bgmTegang.pause();
+
     try {
+        
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         mediaRecorder = new MediaRecorder(stream);
         audioChunks = [];
@@ -487,30 +555,7 @@ function berhentiRekam() {
 
 function putarRekaman() { const audio = document.getElementById('audio-playback'); if (audio && audio.src) audio.play(); }
 
-function putarVO(audioId) {
-    const audio = document.getElementById(audioId);
-    if (!audio) return;
-    if (currentVO && currentVO !== audio) { currentVO.pause(); currentVO.currentTime = 0; }
-    if (audio.paused) { audio.currentTime = 0; audio.play(); currentVO = audio; } 
-    else { audio.pause(); audio.currentTime = 0; currentVO = null; }
-}
+
 
 function transisiKeScene12() { pindahScene(12); }
-
-function gantiBGM(id) {
-    const bgmCeria = document.getElementById('bgm-ceria');
-    const bgmTegang = document.getElementById('bgm-tegang');
-
-    // Stop semua dulu
-    [bgmCeria, bgmTegang].forEach(bgm => {
-        if (bgm) { bgm.pause(); bgm.currentTime = 0; }
-    });
-
-    // Play yang diminta
-    const target = document.getElementById(id);
-    if (target) {
-        target.volume = 0.4;
-        target.play().catch(e => console.log("BGM gagal:", e));
-    }
-}
 

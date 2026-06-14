@@ -81,6 +81,7 @@ body { margin: 0; padding: 0; overflow: hidden; font-family: 'Fredoka', sans-ser
     overflow: hidden;
     z-index: 10;
     transition: 0.2s ease;
+    z-index: 20;
 }
 
 .btn-speaker img {
@@ -401,10 +402,10 @@ body { margin: 0; padding: 0; overflow: hidden; font-family: 'Fredoka', sans-ser
 ========================================== */
 #slide-1 .wadah-hotspot {
     width: 95% !important;
-    height: 32vh !important;
-    max-height: 280px !important;
+    height: 55vh !important; 
+    max-height: 450px !important;
     flex: none !important; 
-    background: white !important;
+    background: transparent !important;
     border: 5px solid white !important; 
     box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
     border-radius: 16px !important;
