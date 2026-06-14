@@ -438,59 +438,100 @@ video, #scene-13, #scene-14 { background: black; }
 /* ==========================================
    SCENE 23 — SERTIFIKAT BARU
 ========================================== */
+/* ==========================================
+   SCENE 23 — SERTIFIKAT FIX (ANTI KEPOTONG)
+========================================== */
+/* ==========================================
+   SCENE 23 — FIX CENTER TOTAL (ANTI MENCONG)
+========================================== */
 #scene-23 {
-    /* Background motif polkadot/confetti */
-    background-image: 
-        radial-gradient(#FFD54F 4px, transparent 4px), 
-        radial-gradient(#4CAF50 4px, transparent 4px),
-        radial-gradient(#2196F3 4px, transparent 4px),
-        radial-gradient(#F44336 4px, transparent 4px);
-    background-size: 100px 100px;
-    background-position: 0 0, 50px 50px, 25px 75px, 75px 25px;
+    background-color: #fdf5e6;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important; /* Tengah secara Vertikal */
+    align-items: center !important;     /* Tengah secara Horizontal */
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0 !important;
+    gap: 20px !important; /* Jarak antara kartu dan tombol */
 }
 
 .sertifikat-card {
     background: white;
-    border: 8px solid #FFD54F;
-    border-radius: 24px;
-    padding: 35px 40px;
-    width: min(90%, 650px);
+    border: 6px solid #FFD54F;
+    border-radius: 20px;
+    padding: 20px 40px;
+    width: 80% !important; 
+    max-width: 600px !important;
     text-align: center;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
-    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    /* Pastikan tidak ada margin atau posisi yang bikin mencong */
+    margin: 0 !important;
+    position: relative !important;
+    left: auto !important;
+    transform: none !important;
 }
-
-.sertifikat-judul { color: #1a2a5e; font-size: clamp(22px, 4vw, 32px); margin: 0 0 15px 0; letter-spacing: 2px; text-shadow: none; }
-.sertifikat-teks { color: #666; font-size: clamp(15px, 2vw, 18px); margin: 0; }
 
 .sertifikat-nama {
     color: #FF9800;
-    font-size: clamp(28px, 5vw, 42px);
-    margin: 15px auto;
-    padding-bottom: 5px;
-    border-bottom: 3px solid #FF9800;
-    width: max-content;
-    min-width: 50%;
+    font-size: clamp(24px, 4vw, 38px);
+    margin: 10px 0;
+    font-weight: 700;
+    display: block;
 }
 
-.sertifikat-deskripsi { color: #555; font-size: clamp(14px, 1.8vw, 16px); line-height: 1.5; margin: 15px auto; max-width: 90%; }
+/* Tombol Ulang - Paksa ke Tengah */
+.btn-ulang {
+    position: static !important; /* Menghapus posisi melayang */
+    margin: 0 !important;
+    transform: none !important;
+    left: auto !important;
+    bottom: auto !important;
+    width: fit-content !important;
+    padding: 12px 40px !important;
+    font-size: 20px !important;
+    background: linear-gradient(to bottom, #FFD700, #FF8C00) !important;
+    border-radius: 50px !important;
+    border: 4px solid white !important;
+    box-shadow: 0 6px 0 #D2691E !important;
+    cursor: pointer;
+}
 
-.sertifikat-visual { display: flex; justify-content: center; align-items: center; gap: 30px; margin-top: 20px; }
+.btn-ulang:active {
+    transform: translateY(4px) !important;
+    box-shadow: 0 2px 0 #D2691E !important;
+}
 
-#sertifikat-avatar { height: 160px; object-fit: contain; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2)); }
+/* Ukuran Gambar & Badge di dalam kartu */
+.sertifikat-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    margin-top: 15px;
+}
+
+#sertifikat-avatar {
+    height: 130px;
+    width: auto;
+    object-fit: contain;
+}
 
 .sertifikat-badge {
-    background: #F44336; color: white; width: 110px; height: 110px; border-radius: 50%;
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-    font-size: 13px; font-weight: bold; line-height: 1.2; box-shadow: 0 8px 20px rgba(244, 67, 54, 0.4);
-    border: 4px solid white; transform: rotate(15deg);
+    background: #F44336;
+    color: white;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 11px;
+    font-weight: bold;
+    border: 3px solid white;
+    transform: rotate(10deg);
 }
-.sertifikat-badge span { font-size: 20px; margin-bottom: 4px; }
-
-/* Tombol Ulang */
-.btn-ulang { position: relative; margin-top: 25px; bottom: auto; left: auto; transform: none; box-shadow: 0 8px 0 #D2691E; }
-.btn-ulang:active { transform: translateY(8px); box-shadow: 0 0 0 #D2691E; }
-
 #scene-9 video {
     display: block !important;
     opacity: 1 !important;

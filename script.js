@@ -143,9 +143,76 @@ function pindahScene(nomorScene) {
             const bgImg = (avatarPilihan === 'cowok') ? 'Scene13_Pilot_Cowok_Announcement(Landing).png' : 'Scene13_Pilot_Cewek_Announcement(Landing).png';
             target.style.backgroundImage = `url('${bgImg}')`;
         }
+        // --- SCENE 19: VIDEO LANDING (PERBAIKAN AGAR TIDAK STUCK) ---
+        if (nomorScene === 19) {
+            const vid19 = document.getElementById('video-landing');
+            if (vid19) {
+                vid19.currentTime = 0; // Mulai dari awal
+                vid19.muted = true;    // Pastikan mute agar browser mengizinkan autoplay
+                
+                // Perintah putar video
+                vid19.play().catch(error => {
+                    console.log("Video landing gagal putar otomatis:", error);
+                });
+
+                // Setelah video mendarat selesai, otomatis pindah ke Scene 20
+                vid19.onended = () => {
+                    pindahScene(20);
+                };
+            }
+        }
+        if (nomorScene === 20 || nomorScene === 21) {
+            const g = (avatarPilihan === 'cowok') ? 'Cowok' : 'Cewek';
+            const suffix = (nomorScene === 21) ? '_Part2' : '';
+            target.style.backgroundImage = `url('Scene15_Pilot_${g}_Lihat_Luar${suffix}.png')`;
+        }
+
+        if (nomorScene === 22) target.style.backgroundImage = "url('Scene15_Petugas_Bagasi.png')";
+        if (nomorScene === '22b') target.style.backgroundImage = "url('Scene15_Pilot_Cewek_Keluar_Kokpit.png')";
+        if (nomorScene === '22c') target.style.backgroundImage = "url('Scene15_Bicara_Sama_Pramugari_Part1.png')";
+        if (nomorScene === '22d') target.style.backgroundImage = "url('Scene15_Bicara_Sama_Pramugari_Part2.png')";
+        if (nomorScene === '22e') target.style.backgroundImage = "url('Scene15_Bicara_Sama_Pramugari_Part3.png')";
+
+        // --- SCENE 22f: VIDEO KELUAR PESAWAT (PERBAIKAN) ---
+        // --- SCENE 22f: KELUAR PESAWAT (VERSI ANTI GAGAL) ---
+        if (nomorScene === '22f') {
+            const vidKeluar = document.getElementById('video-keluar-pesawat');
+            if (vidKeluar) {
+                vidKeluar.muted = true;    // Wajib ada
+                vidKeluar.currentTime = 0; // Reset ke awal
+                vidKeluar.load();          // Paksa browser muat ulang file videonya
+                
+                // Perintah putar
+                const janjiPutar = vidKeluar.play();
+                
+                if (janjiPutar !== undefined) {
+                    janjiPutar.then(() => {
+                        // Video berhasil jalan
+                        console.log("Video berjalan!");
+                    }).catch(error => {
+                        // Jika tetap diblokir browser, langsung loncat ke sertifikat
+                        console.log("Video diblokir browser, loncat ke sertifikat.");
+                        pindahScene(23); 
+                    });
+                }
+
+                // Setelah video selesai, pindah ke sertifikat
+                vidKeluar.onended = () => {
+                    pindahScene(23);
+                };
+            }
+        }
+
+        // --- SERTIFIKAT ---
         if (nomorScene === 23) {
-            document.getElementById('nama-kapten-final').innerText = namaKapten;
-            document.getElementById('sertifikat-avatar').src = (avatarPilihan === 'cowok') ? 'Cowok_Fullbody.jpeg' : 'Cewek_Fullbody.jpeg';
+            // Pastikan nama tidak kosong, jika kosong beri nama Kapten Cilik
+            const namaFinal = namaKapten || "Kapten Cilik";
+            document.getElementById('nama-kapten-final').innerText = namaFinal;
+            
+            const fotoSertif = document.getElementById('sertifikat-avatar');
+            if (fotoSertif) {
+                fotoSertif.src = (avatarPilihan === 'cowok') ? 'Kapten_Cowok.jpeg' : 'Kapten_Cewek.jpeg';
+            }
         }
 
         // 3. Fade In (Layar Terbuka)
@@ -321,5 +388,5 @@ function transisiKeScene12() { pindahScene(12); }
 setTimeout(() => {
    namaKapten = "Zahwa";       
    avatarPilihan = "cewek";    
-   pindahScene(11);          
+   pindahScene(3);          
 }, 500);
