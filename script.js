@@ -121,6 +121,8 @@ function pindahScene(nomorScene) {
             const vid14 = document.getElementById('video-turbulensi-kokpit');
             if (vid14) {
                 vid14.src = (avatarPilihan === 'cowok') ? 'Scene10_Dalam_Kokpit_Saat_Turbulensi_cowok.mp4' : 'Scene10_Dalam_Kokpit_Saat_Turbulensi.mp4';
+                'audio/sound turbulensi pilot cowok/suara_saat_turbulensi_pilot_cowok-drums-D minor-156bpm-441hz.mp3' ;
+            'audio/sound turbulensi pilot cewek/Scene10_Dalam_Kokpit_Saat_Turbulensi-drums-B minor-140bpm-441hz.mp3';
                 vid14.load(); vid14.play();
                 vid14.onended = () => { pindahScene('14b'); };
             }
@@ -215,6 +217,21 @@ function pindahScene(nomorScene) {
             }
         }
 
+        // Play BGM ceria dari awal
+if (nomorScene === 2) {
+    gantiBGM('bgm-ceria');
+}
+
+// Ganti ke BGM tegang saat masuk scene 13
+if (nomorScene === 13) {
+    gantiBGM('bgm-tegang');
+}
+
+// Balik ke BGM ceria setelah turbulensi selesai (scene 17)
+if (nomorScene === 17) {
+    gantiBGM('bgm-ceria');
+}
+
         // 3. Fade In (Layar Terbuka)
         setTimeout(() => {
             if (fadeOverlay) fadeOverlay.classList.remove('active');
@@ -244,16 +261,57 @@ function cekDataLanjut() {
     }
 }
 
+function putarVO(audioId) {
+    const audio = document.getElementById(audioId);
+    if (!audio) return;
+
+    const bgmCeria = document.getElementById('bgm-ceria');
+    const bgmTegang = document.getElementById('bgm-tegang');
+
+    if (currentVO && currentVO !== audio) {
+        currentVO.pause();
+        currentVO.currentTime = 0;
+        document.querySelectorAll('.btn-speaker.playing').forEach(b => b.classList.remove('playing'));
+    }
+
+    const btn = audio.closest('.dialog-standar, .dialog-box')?.querySelector('.btn-speaker');
+
+    if (audio.paused) {
+        // Kecilkan BGM saat VO mulai
+        if (bgmCeria) bgmCeria.volume = 0.1;
+        if (bgmTegang) bgmTegang.volume = 0.1;
+
+        audio.currentTime = 0;
+        audio.play();
+        if (btn) btn.classList.add('playing');
+        currentVO = audio;
+
+        // Kembalikan volume BGM setelah VO selesai
+        audio.onended = () => {
+            if (btn) btn.classList.remove('playing');
+            if (bgmCeria) bgmCeria.volume = 0.4;
+            if (bgmTegang) bgmTegang.volume = 0.4;
+            currentVO = null;
+        };
+    } else {
+        audio.pause();
+        audio.currentTime = 0;
+        if (btn) btn.classList.remove('playing');
+        if (bgmCeria) bgmCeria.volume = 0.4;
+        if (bgmTegang) bgmTegang.volume = 0.4;
+        currentVO = null;
+    }
+}
 // ==========================================
 // FUNGSI HOTSPOT SERAGAM
 // ==========================================
 let statusAtribut = { topi: false, wing: false, epaulet: false, dasi: false };
 function klikAtribut(jenis) {
     const info = {
-        topi: { judul: "Topi Pilot", teks: "Melindungi kepala dan tanda disiplin.", gambar: "topi_pilot.png" },
-        wing: { judul: "Lencana Wing", teks: "Tanda Kapten sudah siap bertugas!", gambar: "lencana_wings.png" },
-        epaulet: { judul: "Pangkat", teks: "Menunjukkan jabatan Kapten.", gambar: "epaulet.png" },
-        dasi: { judul: "Dasi", teks: "Agar Kapten tampil rapi!", gambar: "dasi.png" }
+        topi: { judul: "Topi Pilot", teks: "Ini topi pilot! Topi ini bikin kita kelihatan gagah dan menunjukkan kalau kita adalah kapten yang siap bertugas!", gambar: "topi_pilot.png" },
+        wing: { judul: "Lencana Wing", teks: "Ini lencana wing! Lencana ini tandanya kita sudah jago terbang dan siap membawa penumpang ke tempat tujuan!", gambar: "lencana_wings.png" },
+        epaulet: { judul: "Pangkat", teks: "Ini pangkat pilot! Garis-garis di bahu ini menunjukkan kalau kita adalah kapten pesawat yang hebat!", gambar: "epaulet.png" },
+        dasi: { judul: "Dasi", teks: "Ini dasi pilot! Dasi ini bikin penampilan kita jadi rapi dan profesional!!", gambar: "dasi.png" }
     };
     document.getElementById('popup-judul').innerText = info[jenis].judul;
     document.getElementById('popup-teks').innerText = info[jenis].teks;
@@ -277,9 +335,9 @@ let statusKokpit = { mesin: false, gas: false, setir: false };
 
 function klikKokpit(jenis) {
     const info = {
-        mesin: { judul: "Engine Start", teks: "Nyalakan mesin utama.", gambar: "Scene6_start_engine.png" },
-        gas: { judul: "Tuas Gas", teks: "Atur kecepatan pesawat.", gambar: "Scene6_tuas.png" },
-        setir: { judul: "Yoke (Setir)", teks: "Kendalikan arah pesawat.", gambar: "Scene6_yoke.png" }
+        mesin: { judul: "Engine Start", teks: "Ini tombol nyalain mesin! Kalau tombol ini ditekan, mesin pesawat akan mulai menyala dan siap untuk terbang!", gambar: "Scene6_start_engine.png" },
+        gas: { judul: "Tuas Gas", teks: "Ini tuas gas! Tuas ini kita dorong ke depan supaya pesawat bisa melaju lebih cepat!", gambar: "Scene6_tuas.png" },
+        setir: { judul: "Yoke (Setir)", teks: "Ini setir pesawat namanya yoke! Kita putar ke kiri atau kanan supaya pesawat bisa berbelok sesuai arah yang kita mau!", gambar: "Scene6_yoke.png" }
     };
     document.getElementById('popup-judul-kokpit').innerText = info[jenis].judul;
     document.getElementById('popup-teks-kokpit').innerText = info[jenis].teks;
@@ -327,8 +385,20 @@ function drop(ev) {
     }
 }
 function nyalakanMesin() {
-    alert("VROOOM! Mesin pesawat sudah menderu!");
+    const sfx = document.getElementById('audio-mesin');
+    if (sfx) { sfx.currentTime = 0; sfx.play(); }
+    
     document.getElementById('btn-nyalakan-mesin').classList.add('hidden');
+    document.getElementById('popup-mesin').classList.remove('hidden');
+}
+
+function tutupPopupMesin() {
+    const sfx = document.getElementById('audio-mesin');
+    if (sfx) {
+        sfx.pause();
+        sfx.currentTime = 0;
+    }
+    document.getElementById('popup-mesin').classList.add('hidden');
     document.getElementById('btn-lanjut-scene7').classList.remove('hidden');
 }
 
@@ -385,8 +455,20 @@ function putarVO(audioId) {
 
 function transisiKeScene12() { pindahScene(12); }
 
-setTimeout(() => {
-   namaKapten = "Zahwa";       
-   avatarPilihan = "cewek";    
-   pindahScene(3);          
-}, 500);
+function gantiBGM(id) {
+    const bgmCeria = document.getElementById('bgm-ceria');
+    const bgmTegang = document.getElementById('bgm-tegang');
+
+    // Stop semua dulu
+    [bgmCeria, bgmTegang].forEach(bgm => {
+        if (bgm) { bgm.pause(); bgm.currentTime = 0; }
+    });
+
+    // Play yang diminta
+    const target = document.getElementById(id);
+    if (target) {
+        target.volume = 0.4;
+        target.play().catch(e => console.log("BGM gagal:", e));
+    }
+}
+

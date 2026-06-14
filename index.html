@@ -74,14 +74,14 @@
     <!-- ======================== SCENE 4: DIALOG MENTOR ======================== -->
     <div id="scene-4" class="scene scene-ilustrasi hidden">
        <div class="dialog-standar dialog-mentor-besar">
-        <h3 class="nama-pembicara" style="background: #FF9800;">Instruktur</h3>
+        <h3 class="nama-pembicara" style="background: #FF9800;">Mentor</h3>
         
         <!-- Tambahkan 'mentor-besar' di sini -->
         <button class="btn-speaker mentor-besar" onclick="putarVO('audio-4a')">
             <img src="avatar_mentor/pose_dadah.png">
         </button>
 
-        <p>"Halo Kapten <span class="nama-placeholder"></span>!  Seragammu sudah rapi sekali. Pesawat juga sudah siap. Ayo, kita berangkat!"</p>
+        <p>"Halo Kapten! Seragammu sudah rapi sekali. Pesawat juga sudah siap. Ayo, kita berangkat!"</p>
         <audio id="audio-4a" src="vo_mentor_scene4.mp3"></audio>
         <button class="btn-lanjut-dialog" onclick="pindahScene('4b')">Lanjut ▶</button>
     </div>
@@ -134,13 +134,18 @@
             <!-- Dialog 1: Kapten -->
             <div class="dialog-kokpit aktif" id="dialog-k1">
                 <div class="dialog-kokpit-bubble">
-                    <button class="btn-speaker" onclick="putarVO('audio-k1')">
-                        <img id="wajah-kapten-s6" src="Kapten_Cewek.jpeg" alt="Pilot">
-                    </button>
-                    <span class="dialog-nama-kecil kapten-label">Kapten <span class="nama-kapten-s6"></span></span>
-                    <p>"Wow, banyak sekali alat di kokpit ini! Aku jadi penasaran semuanya buat apa."</p>
-                    <audio id="audio-k1" src="vo_kapten_scene6.mp3"></audio>
-                </div>
+    <!-- Tombol Speaker/Wajah -->
+    <button class="btn-speaker" onclick="putarVO('audio-k1')">
+        <img id="wajah-kapten-s6" src="Kapten_Cewek.jpeg">
+    </button>
+    
+    <!-- Label Nama -->
+    <span class="dialog-nama-kecil kapten-label">Kapten <span class="nama-kapten-s6"></span></span>
+    
+    <!-- Isi Teks -->
+    <p>"Wow, banyak sekali alat di kokpit ini! Aku jadi penasaran semuanya buat apa."</p>
+    <audio id="audio-k1" src="vo_kapten_scene6.mp3"></audio>
+</div>
                 <button class="btn-dialog-kokpit" onclick="gantiDialogKokpit(2)">Lanjut ▶</button>
             </div>
 
@@ -148,9 +153,9 @@
             <div class="dialog-kokpit" id="dialog-k2">
                 <div class="dialog-kokpit-bubble" style="border-color: #FF9800;">
                     <button class="btn-speaker" style="background: #FF9800;" onclick="putarVO('audio-k2')">
-                        <img src="Mentor.png" alt="Mentor">
+                        <img src="avatar_mentor\pose_polos.png" alt="Mentor">
                     </button>
-                    <span class="dialog-nama-kecil mentor-label">Instruktur</span>
+                    <span class="dialog-nama-kecil mentor-label">Mentor</span>
                     <p>"Betul sekali! Setiap alat punya tugasnya sendiri. Yuk, kita kenalan satu per satu!"</p>
                     <audio id="audio-k2" src="vo_mentor_scene6.mp3"></audio>
                 </div>
@@ -204,11 +209,12 @@
         
         <div class="glass-panel panel-sabuk-fix">
             <h3 class="sub-judul" id="instruksi-sabuk" style="color: #333;">Tarik sabuk ke kotak gesper!</h3>
-            
+            <audio id="audio-sabuk" src="audio/sfx/sfx_seatbelt.MP3"></audio>
             <div class="seatbelt-area">
                 <div id="sabuk-ujung" draggable="true" ondragstart="drag(event)" class="sabuk-besi">🔗 Tarik Sabuk</div>
                 <div id="sabuk-gesper" ondrop="drop(event)" ondragover="allowDrop(event)" class="sabuk-kunci">[ Gesper ]</div>
             </div>
+            <audio id="audio-mesin" src="audio\sfx\sfx_mesin_pesawat.MP3"></audio>
             
             <!-- Container khusus tombol aksi -->
             <div class="action-container">
@@ -251,7 +257,7 @@
         </button>
         
         <h3 class="nama-pembicara" style="background: #FF9800;">Mentor</h3>
-        <p>"Kapten <span class="nama-placeholder"></span>, sebelum lepas landas, jangan lupa
+        <p>"Kapten, sebelum lepas landas, jangan lupa
             gunakan mikrofon untuk memberi 
             pengumuman kepada penumpang ya!"</p>
         <audio id="audio-8a" src="vo_mentor_scene8a.mp3"></audio>
@@ -499,5 +505,20 @@
 <audio id="audio-playback" class="hidden"></audio>
 
     <script src="script.js"></script>
+    <!-- POPUP MESIN MENYALA -->
+<div id="popup-mesin" class="popup-overlay hidden">
+    <div class="popup-mesin-content">
+        <div class="popup-mesin-icon">
+    <i class="fa-solid fa-plane-departure"></i>
+</div>
+        <h2 class="popup-mesin-judul">VROOOM!</h2>
+        <p class="popup-mesin-teks">Mesin pesawat sudah menyala!<br>Kamu siap terbang, Kapten!</p>
+        <button class="btn-tutup-popup" onclick="tutupPopupMesin()">Siap Terbang!</button>
+    </div>
+
+    <audio id="sfx-turbulensi" src="" loop></audio>
+    <audio id="bgm-ceria" src="audio\bgm\bgm_ceria.mp3" loop></audio>
+<audio id="bgm-tegang" src="audio\bgm\bgm_menegangkan.mp3" loop></audio>
+</div>
 </body>
 </html>
