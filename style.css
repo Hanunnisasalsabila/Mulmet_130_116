@@ -822,29 +822,26 @@ video, #scene-13, #scene-14 { background: black; }
     z-index: 60;
 }
 
-/* Bingkai Headset (Badge) */
 .headset-badge {
-    width: 110px; 
-    height: 110px;
-    background: white;
-    border: 6px solid #2196F3; 
-    border-radius: 50%;
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    /* KUNCI: Potong gambar kotak agar mengikuti bentuk bulat */
-    overflow: hidden; 
-    animation: floatAnim 3s ease-in-out infinite;
+    background: white;
+    border-radius: 20px;
+    border: 5px solid #2196F3;
+    padding: 15px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    width: clamp(120px, 20vw, 180px);
+    height: clamp(120px, 20vw, 180px);
 }
 
-/* Gambar Headset - Dibuat memenuhi lingkaran tapi dipotong otomatis */
 .img-headset {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Memaksa gambar mengisi ruang bulat */
-    transform: scale(0.8); /* Perkecil sedikit isinya agar ada jarak dengan border biru */
+    object-fit: contain;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+    animation: tombolNapas 1.5s infinite alternate;
 }
 
 /* Speaker Mentor di Samping Kanan (Scene 8a saja) */
@@ -947,4 +944,48 @@ video, #scene-13, #scene-14 { background: black; }
     white-space: nowrap;
     display: inline-block;
     background: #4CAF50;
+}
+.dialog-standar{
+    position: relative;
+    overflow: visible;
+}
+
+.mentor-mic-container{
+    position: absolute;
+    top: -85px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+}
+
+.headset-badge{
+    width: 240px;
+    height: 160px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: white;
+    border: 4px solid #3b82f6;
+    border-radius: 20px;
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.img-headset{
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
+}
+.headset-badge{
+    width: 260px;
+    height: 180px;
+}
+
+.img-headset{
+    width: 65%;
+}
+.mentor-mic-container{
+    top: -100px;
 }

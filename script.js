@@ -26,6 +26,16 @@ function gantiBGM(id) {
         target.play().catch(e => console.log("BGM gagal:", e));
     }
 }
+function resumeBGM() {
+    const bgmCeria = document.getElementById('bgm-ceria');
+    const bgmTegang = document.getElementById('bgm-tegang');
+    if (bgmCeria && bgmCeria.paused && bgmCeria.src) {
+        bgmCeria.play().catch(e => console.log(e));
+    }
+    if (bgmTegang && bgmTegang.paused && bgmTegang.src) {
+        bgmTegang.play().catch(e => console.log(e));
+    }
+}
 
 // ==========================================
 // FUNGSI NAVIGASI SCENE UTAMA (UNIVERSAL FADE)
@@ -104,18 +114,19 @@ function pindahScene(nomorScene) {
 
         // --- SCENE 9 & 10 (VIDEO OTOMATIS) ---
         if (nomorScene == 9) {
-            const video = document.getElementById('video-takeoff');
-            if (video) {
-                video.muted = true; video.currentTime = 0; video.play();
-                let sudahFade = false;
-                video.ontimeupdate = () => {
-                    if (video.currentTime >= video.duration - 1.5 && !sudahFade) {
-                        sudahFade = true;
-                        pindahScene(10);
-                    }
-                };
+    resumeBGM(); // ganti yang manual tadi dengan ini
+    const video = document.getElementById('video-takeoff');
+    if (video) {
+        video.muted = true; video.currentTime = 0; video.play();
+        let sudahFade = false;
+        video.ontimeupdate = () => {
+            if (video.currentTime >= video.duration - 1.5 && !sudahFade) {
+                sudahFade = true;
+                pindahScene(10);
             }
-        }
+        };
+    }
+}
         if (nomorScene == 10) {
             const vid10 = document.getElementById('video-terbang-kokpit');
             if (vid10) {
@@ -137,9 +148,10 @@ function pindahScene(nomorScene) {
             target.style.backgroundImage = `url('${bgImg}')`;
         }
         if (nomorScene === 12) {
-            const vid12 = document.getElementById('video-pemandangan');
-            if (vid12) { vid12.play(); vid12.onended = () => { pindahScene('12b'); }; }
-        }
+    resumeBGM();
+    const vid12 = document.getElementById('video-pemandangan');
+    if (vid12) { vid12.play(); vid12.onended = () => { pindahScene('12b'); }; }
+}
 
         // --- SCENE 12b (TRANSISI NARASI WAKTU) ---
         if (nomorScene == '12b') {
@@ -176,13 +188,15 @@ function pindahScene(nomorScene) {
             if (vid16) { vid16.play(); vid16.onended = () => { pindahScene(18); }; }
         }
         if (nomorScene === 18) {
-            resetRecordingUI();
+    resumeBGM(); // ← tambahkan di sini
+    resetRecordingUI();
             const bgImg = (avatarPilihan === 'cowok') ? 'Scene13_Pilot_Cowok_Announcement(Landing).png' : 'Scene13_Pilot_Cewek_Announcement(Landing).png';
             target.style.backgroundImage = `url('${bgImg}')`;
         }
         // --- SCENE 19: VIDEO LANDING (PERBAIKAN AGAR TIDAK STUCK) ---
         if (nomorScene === 19) {
-            const vid19 = document.getElementById('video-landing');
+    resumeBGM(); // ← tambahkan di sini
+    const vid19 = document.getElementById('video-landing');
             if (vid19) {
                 vid19.currentTime = 0; // Mulai dari awal
                 vid19.muted = true;    // Pastikan mute agar browser mengizinkan autoplay
@@ -376,10 +390,10 @@ function putarVO(audioId) {
 let statusAtribut = { topi: false, wing: false, epaulet: false, dasi: false };
 function klikAtribut(jenis) {
     const info = {
-        topi:    { judul: "Topi Pilot",   teks: "Ini topi pilot! Topi ini bikin kita kelihatan gagah dan menunjukkan kalau kita adalah kapten yang siap bertugas!",           gambar: "topi_pilot.png",    audio: "audio/voiceover/vo_topi.MP3" },
+        topi:    { judul: "Topi Pilot",   teks: "Ini topi pilot! Topi ini bikin kita kelihatan gagah dan menunjukkan kalau kita adalah kapten yang siap bertugas! Keren banget kan?",          gambar: "topi_pilot.png",    audio: "audio/voiceover/vo_topi.MP3" },
         wing:    { judul: "Lencana Wing", teks: "Ini lencana wing! Lencana ini tandanya kita sudah jago terbang dan siap membawa penumpang ke tempat tujuan!",               gambar: "lencana_wings.png", audio: "audio/voiceover/vo_wings.MP3" },
-        epaulet: { judul: "Pangkat",      teks: "Ini pangkat pilot! Garis-garis di bahu ini menunjukkan kalau kita adalah kapten pesawat yang hebat!",                       gambar: "epaulet.png",       audio: "audio/voiceover/vo_pangkat.MP3" },
-        dasi:    { judul: "Dasi",         teks: "Ini dasi pilot! Dasi ini bikin penampilan kita jadi rapi dan profesional!",                                                  gambar: "dasi.png",          audio: "audio/voiceover/vo_dasi.MP3" }
+        epaulet: { judul: "Pangkat",      teks: "Ini pangkat pilot! Lihat garis-garisnya di bahu! Garis ini menunjukkan kalau kita adalah kapten pesawat yang hebat!",                       gambar: "epaulet.png",       audio: "audio/voiceover/vo_pangkat.MP3" },
+        dasi:    { judul: "Dasi",         teks: "Ini dasi pilot! Dasi ini bikin penampilan kita jadi rapi dan kelihatan profesional! Wah, Kapten kita makin keren nih!",                                                  gambar: "dasi.png",          audio: "audio/voiceover/vo_dasi.MP3" }
     };
       document.getElementById('popup-judul').innerText = info[jenis].judul;
     document.getElementById('popup-teks').innerText = info[jenis].teks;
@@ -480,6 +494,10 @@ function drop(ev) {
     ev.preventDefault();
     const data = ev.dataTransfer.getData("text");
     if (data === "sabuk-ujung") {
+        // Play SFX sabuk
+        const sfxSabuk = document.getElementById('audio-sabuk');
+        if (sfxSabuk) { sfxSabuk.currentTime = 0; sfxSabuk.play(); }
+
         document.getElementById("sabuk-ujung").style.display = "none";
         const g = document.getElementById("sabuk-gesper");
         g.innerHTML = "<i class='fa-solid fa-lock'></i> SABUK TERKUNCI";
@@ -559,3 +577,15 @@ function putarRekaman() { const audio = document.getElementById('audio-playback'
 
 function transisiKeScene12() { pindahScene(12); }
 
+function playSFXButton() {
+    const sfx = document.getElementById('sfx-button');
+    if (sfx) { sfx.currentTime = 0; sfx.play(); }
+}
+
+document.addEventListener('click', (e) => {
+    const isBtn = e.target.closest('.btn-lanjut-dialog, .btn-lanjut, .btn-tutup-popup, .btn-mulai, .btn-dialog-kokpit, .btn-aksi-hijau, .btn-aksi-kuning');
+    if (isBtn) {
+        const sfx = document.getElementById('sfx-button');
+        if (sfx) { sfx.currentTime = 0; sfx.play(); }
+    }
+});
