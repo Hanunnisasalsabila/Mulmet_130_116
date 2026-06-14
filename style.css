@@ -401,20 +401,21 @@ body { margin: 0; padding: 0; overflow: hidden; font-family: 'Fredoka', sans-ser
 ========================================== */
 #slide-1 .wadah-hotspot {
     width: 95% !important;
-    height: 55vh !important; 
-    max-height: 450px !important;
+    height: 32vh !important;
+    max-height: 280px !important;
     flex: none !important; 
-    background: transparent !important;
+    background: white !important;
     border: 5px solid white !important; 
     box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
     border-radius: 16px !important;
 }
 
 #slide-1 .wadah-hotspot img {
-    width: 110% !important;
-    height: 110% !important;
-    object-fit: cover !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
     border-radius: 10px !important;
+    background: white !important;
 }
 /* ==========================================
    KHUSUS SCENE 6: BESARKAN KARAKTER
@@ -930,4 +931,19 @@ video, #scene-13, #scene-14 { background: black; }
     font-size: clamp(16px, 2.5vw, 20px);
     line-height: 1.6;
     margin-bottom: 20px;
+}
+.dialog-box .nama-pembicara {
+    position: absolute;
+    top: -24px;
+    left: 30px;
+    color: white;
+    padding: 6px 24px;
+    border-radius: 14px;
+    font-size: clamp(16px, 2.5vw, 22px);
+    border: 4px solid white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    margin: 0;
+    white-space: nowrap;
+    display: inline-block;
+    background: #4CAF50;
 }

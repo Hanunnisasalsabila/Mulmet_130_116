@@ -90,7 +90,7 @@
     <div id="scene-4b" class="scene scene-ilustrasi hidden">
         <div class="dialog-standar">
             <h3 class="nama-pembicara" style="background: #4CAF50;">Kapten <span class="nama-placeholder"></span></h3>
-            <button class="btn-speaker" onclick="putarVO('audio-4b')">&#128266;</button>
+            
             <p>"Siap, Mentor! Aku sudah mempelajari rutenya. Ayo kita naik ke pesawat sekarang!"</p>
             <audio id="audio-4b" src="vo_kapten_scene4b.mp3"></audio>
             <button class="btn-lanjut-dialog" onclick="pindahScene(5)">Naik ke Pesawat</button>
@@ -101,7 +101,7 @@
     <div id="scene-5" class="scene scene-ilustrasi hidden" style="background-image: url('naik_tangga_pesawat_cewek.png');">
         <div class="dialog-standar">
             <h3 class="nama-pembicara" style="background: #4CAF50;">Kapten <span class="nama-placeholder"></span></h3>
-            <button class="btn-speaker" onclick="putarVO('audio-5')">&#128266;</button>
+           
             <p>"Wah, pesawatnya besar banget! Aku naik tangganya dengan berani, ya!."</p>
             <audio id="audio-5" src="vo_kapten_scene5.mp3"></audio>
             <button class="btn-lanjut-dialog" onclick="pindahScene(6)">Masuk Kokpit ▶</button>
@@ -170,12 +170,11 @@
                     <h3 class="sub-judul">Ini kokpit dari depan — klik semua alatnya!</h3>
                     <div class="wadah-hotspot">
                         <img src="scene6_pengenalan_kokpit_dari_depan.png" alt="Kokpit dari Depan">
-                        <button class="pin-hotspot belum" id="btn-mesin" onclick="klikKokpit('mesin')" style="top:30%;left:18%;"></button>
-                        <button class="pin-hotspot belum" id="btn-gas"   onclick="klikKokpit('gas')"   style="top:52%;left:38%;"></button>
-                        <button class="pin-hotspot belum" id="btn-setir" onclick="klikKokpit('setir')" style="top:62%;left:52%;"></button>
-                        
+                        <button class="pin-hotspot belum" id="btn-mesin" onclick="klikKokpit('mesin')" style="top:32%; left:40%;"></button>
+<button class="pin-hotspot belum" id="btn-gas"   onclick="klikKokpit('gas')"   style="top:55%; left:48%;"></button>
+<button class="pin-hotspot belum" id="btn-setir" onclick="klikKokpit('setir')" style="top:70%; left:50%;"></button>
                     </div>
-                    <button id="btn-slide-lanjut" class="btn-lanjut hidden" onclick="pindahScene('6b')" style="margin-top:16px;">Aku Siap Duduk! 🪑</button>
+                    <button id="btn-slide-lanjut" class="btn-lanjut hidden" onclick="pindahScene('6b')" style="margin-top:16px;">Aku Siap Duduk!</button>
                 </div>
             </div>
         </div>
@@ -194,7 +193,7 @@
     <div id="scene-6b" class="scene scene-ilustrasi hidden">
         <div class="dialog-standar">
             <h3 class="nama-pembicara" style="background:#4CAF50;">Kapten <span class="nama-placeholder"></span></h3>
-            <button class="btn-speaker" onclick="putarVO('audio-6b')">&#128266;</button>
+           
             <p>"Asyik, aku duduk di kursi pilot! Sekarang pasang sabuk pengaman dulu, ya, lalu nyalakan mesinnya!"</p>
             <audio id="audio-6b" src="vo_kapten_scene6b.mp3"></audio>
             <button class="btn-lanjut-dialog" onclick="pindahScene(7)">Pasang Sabuk! 🔗</button>
@@ -227,9 +226,7 @@
 <div id="scene-8" class="scene scene-ilustrasi hidden" style="background-image: url('pesawat.png'); background-position: center 30%;">
     <div class="dialog-standar">
         <h3 class="nama-pembicara" style="background: #f44336;">Menara Kontrol</h3>
-        <button class="btn-speaker" onclick="putarVO('audio-8')">
-            <img src="Mentor.png" alt="Mentor">
-        </button>
+        
         <p>"Kapten, landasan sudah aman. Kamu boleh bersiap-siap untuk terbang!"</p>
         <audio id="audio-8" src="vo_menara_scene8.mp3"></audio>
         <button class="btn-lanjut-dialog" onclick="pindahScene('8a')">Siap Lepas Landas! <i class="fa-solid fa-plane-departure"></i></button>
@@ -424,7 +421,7 @@
         <div class="dialog-standar">
             <h3 class="nama-pembicara" style="background: #4CAF50;">Kapten <span class="nama-placeholder"></span></h3>
             <p>"Lihat, ada petugas bagasi di bawah! Mereka akan membantu menurunkan koper-koper penumpang."</p>
-            <button class="btn-lanjut-dialog" onclick="pindahScene(22)">Lihat Petugas 👷</button>
+            <button class="btn-lanjut-dialog" onclick="pindahScene(22)">Lihat Petugas</button>
         </div>
     </div>
 
@@ -517,8 +514,8 @@
     </div>
 
     <audio id="sfx-turbulensi" src="" loop></audio>
-    <audio id="bgm-ceria" src="audio\bgm\bgm_ceria.mp3" loop></audio>
-<audio id="bgm-tegang" src="audio\bgm\bgm_menegangkan.mp3" loop></audio>
+    <audio id="bgm-ceria" src="audio/bgm/bgm_ceria.mp3" loop></audio>
+<audio id="bgm-tegang" src="audio/bgm/bgm_menegangkan.mp3" loop></audio>
 </div>
 </body>
 </html>

@@ -170,11 +170,28 @@ function pindahScene(nomorScene) {
         }
 
         if (nomorScene === 22) target.style.backgroundImage = "url('Scene15_Petugas_Bagasi.png')";
-        if (nomorScene === '22b') target.style.backgroundImage = "url('Scene15_Pilot_Cewek_Keluar_Kokpit.png')";
+       if (nomorScene === '22b') {
+    const bgImg = (avatarPilihan === 'cowok') ? 'Scene15_Pilot_Cowok_Keluar_Kokpit.png' : 'Scene15_Pilot_Cewek_Keluar_Kokpit.png';
+    target.style.backgroundImage = `url('${bgImg}')`;
+}
         if (nomorScene === '22c') target.style.backgroundImage = "url('Scene15_Bicara_Sama_Pramugari_Part1.png')";
         if (nomorScene === '22d') target.style.backgroundImage = "url('Scene15_Bicara_Sama_Pramugari_Part2.png')";
         if (nomorScene === '22e') target.style.backgroundImage = "url('Scene15_Bicara_Sama_Pramugari_Part3.png')";
 
+        function gantiBGM(id) {
+    const bgmCeria = document.getElementById('bgm-ceria');
+    const bgmTegang = document.getElementById('bgm-tegang');
+
+    [bgmCeria, bgmTegang].forEach(bgm => {
+        if (bgm) { bgm.pause(); bgm.currentTime = 0; }
+    });
+
+    const target = document.getElementById(id);
+    if (target) {
+        target.volume = 0.4;
+        target.play().catch(e => console.log("BGM gagal:", e));
+    }
+}
         // --- SCENE 22f: VIDEO KELUAR PESAWAT (PERBAIKAN) ---
         // --- SCENE 22f: KELUAR PESAWAT (VERSI ANTI GAGAL) ---
         if (nomorScene === '22f') {
@@ -222,13 +239,12 @@ if (nomorScene === 2) {
     gantiBGM('bgm-ceria');
 }
 
-// Ganti ke BGM tegang saat masuk scene 13
+// Ganti tegang saat scene 13
 if (nomorScene === 13) {
     gantiBGM('bgm-tegang');
 }
-
-// Balik ke BGM ceria setelah turbulensi selesai (scene 17)
-if (nomorScene === 17) {
+// Balik ceria saat scene 16 (pemulihan cuaca) — bukan 17
+if (nomorScene === 16) {
     gantiBGM('bgm-ceria');
 }
 
@@ -257,8 +273,34 @@ function cekDataLanjut() {
     } else {
         document.getElementById('nama-kapten-display').innerText = namaKapten;
         document.getElementById('gambar-avatar-scene3').src = (avatarPilihan === 'cowok') ? "Cowok_Fullbody.jpeg" : "Cewek_Fullbody.jpeg";
+         aturPosisiHotspot();
         pindahScene(3); 
     }
+}
+function aturPosisiHotspot() {
+    const posisi = {
+        cowok: {
+            topi:    { top: '15%',  left: '49%' },
+            epaulet: { top: '37%', left: '44%' },
+            wing:    { top: '46%', left: '50%' },
+            dasi:    { top: '44%', left: '48%' }
+        },
+        cewek: {
+            topi:    { top: '6%',  left: '52%' },
+            epaulet: { top: '38%', left: '46%' },
+            wing:    { top: '44%', left: '53%' },
+            dasi:    { top: '43%', left: '50%' }
+        }
+    };
+
+    const p = posisi[avatarPilihan];
+    Object.keys(p).forEach(jenis => {
+        const btn = document.getElementById('btn-' + jenis);
+        if (btn) {
+            btn.style.top  = p[jenis].top;
+            btn.style.left = p[jenis].left;
+        }
+    });
 }
 
 function putarVO(audioId) {
