@@ -45,6 +45,12 @@ function resumeBGM() {
 // FUNGSI NAVIGASI SCENE UTAMA (UNIVERSAL FADE)
 // ==========================================
 function pindahScene(nomorScene) {
+     if (currentVO) {
+        currentVO.pause();
+        currentVO.currentTime = 0;
+        document.querySelectorAll('.btn-speaker.playing').forEach(b => b.classList.remove('playing'));
+        currentVO = null;
+    }
     const fadeOverlay = document.getElementById('fade-black-overlay');
     
     // 1. Mulai Fade Out (Layar Menghitam)
@@ -76,7 +82,7 @@ function pindahScene(nomorScene) {
     // Auto-play VO mentor scene 4
     setTimeout(() => {
         const vo = document.getElementById('audio-4a');
-        if (vo) { vo.currentTime = 0; vo.play().catch(e => console.log(e)); }
+        if (vo) { vo.currentTime = 0; vo.play().catch(e => console.log(e));  currentVO = vo; }
     }, 500); // delay 0.5 detik biar scene sudah fully visible
 }
         if (nomorScene === '4b') {
@@ -471,13 +477,24 @@ function tutupPopupKokpit() {
 }
 
 function gantiSlideKokpit(index, reset = false) {
+    // TAMBAHKAN INI: Matikan suara mentor sebelum ganti slide
+    if (currentVO) {
+        currentVO.pause();
+        currentVO.currentTime = 0;
+        document.querySelectorAll('.btn-speaker.playing').forEach(b => b.classList.remove('playing'));
+        currentVO = null;
+    }
+
+    // Kembalikan volume BGM ke normal
+    const bgmCeria = document.getElementById('bgm-ceria');
+    if (bgmCeria) bgmCeria.volume = 0.4;
+
     document.querySelectorAll('.kokpit-slide').forEach(s => s.classList.remove('aktif'));
     document.querySelectorAll('.slide-dot').forEach(d => d.classList.remove('aktif'));
     document.getElementById('slide-' + index).classList.add('aktif');
     document.getElementById('dot-' + index).classList.add('aktif');
     if (reset) gantiDialogKokpit(1);
 }
-
 function gantiDialogKokpit(nomor) {
     document.querySelectorAll('.dialog-kokpit').forEach(d => d.classList.remove('aktif'));
     document.getElementById('dialog-k' + nomor).classList.add('aktif');
