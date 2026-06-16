@@ -116,10 +116,14 @@ function pindahScene(nomorScene) {
             const bgImg = (avatarPilihan === 'cowok') ? 'Scene5_duduk_di_kokpit_cowok.png' : 'Scene5_duduk_di_kokpit_cewek.png';
             target.style.backgroundImage = `url('${bgImg}')`;
             // Auto-play VO mentor
-    setTimeout(() => {
-        const vo = document.getElementById('audio-8a');
-        if (vo) { vo.currentTime = 0; vo.play().catch(e => console.log(e)); }
-    }, 500);
+            setTimeout(() => {
+                const vo = document.getElementById('audio-8a');
+                if (vo) { 
+                    vo.currentTime = 0; 
+                    vo.play().catch(e => console.log(e)); 
+                    currentVO = vo; // INI TAMBAHANNYA
+                }
+            }, 500);
         }
 
         // --- SCENE 9 & 10 (VIDEO OTOMATIS) ---
@@ -508,8 +512,17 @@ function gantiDialogKokpit(nomor) {
     if (audioMap[nomor]) {
         const audio = document.getElementById(audioMap[nomor]);
         if (audio) {
+            // Matikan suara sebelumnya jika masih ada yang berjalan
+            if (currentVO) {
+                currentVO.pause();
+                currentVO.currentTime = 0;
+            }
+            
             audio.currentTime = 0;
             audio.play().catch(e => console.log("VO auto gagal:", e));
+            
+            // INI KUNCI PERBAIKANNYA: Catat audio ini sebagai audio yang sedang aktif
+            currentVO = audio; 
         }
     }
 }
