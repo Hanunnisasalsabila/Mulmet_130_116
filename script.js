@@ -9,34 +9,38 @@ let audioBlob;
 let audioUrl;
 let currentVO = null;
 
+let musikAktif = "bgm-ceria"; // Default awal
 
 function gantiBGM(id) {
     const bgmCeria = document.getElementById('bgm-ceria');
     const bgmTegang = document.getElementById('bgm-tegang');
 
-    // Stop semua dulu
+    // Simpan status musik mana yang terakhir diminta
+    musikAktif = id;
+
+    // Stop semua musik secara total
     [bgmCeria, bgmTegang].forEach(bgm => {
-        if (bgm) { bgm.pause(); bgm.currentTime = 0; }
+        if (bgm) { 
+            bgm.pause(); 
+            bgm.currentTime = 0; 
+        }
     });
 
-    // Play yang diminta
+    // Play hanya yang diminta
     const target = document.getElementById(id);
     if (target) {
         target.volume = 0.4;
         target.play().catch(e => console.log("BGM gagal:", e));
     }
 }
+
 function resumeBGM() {
-    const bgmCeria = document.getElementById('bgm-ceria');
-    const bgmTegang = document.getElementById('bgm-tegang');
-    if (bgmCeria && bgmCeria.paused && bgmCeria.src) {
-        bgmCeria.play().catch(e => console.log(e));
-    }
-    if (bgmTegang && bgmTegang.paused && bgmTegang.src) {
-        bgmTegang.play().catch(e => console.log(e));
+    // Hanya memutar kembali musik yang terakhir kali diset aktif
+    const target = document.getElementById(musikAktif);
+    if (target && target.paused) {
+        target.play().catch(e => console.log("Gagal resume:", e));
     }
 }
-
 // ==========================================
 // FUNGSI NAVIGASI SCENE UTAMA (UNIVERSAL FADE)
 // ==========================================
@@ -114,7 +118,7 @@ function pindahScene(nomorScene) {
 
         // --- SCENE 9 & 10 (VIDEO OTOMATIS) ---
         if (nomorScene == 9) {
-    resumeBGM(); // ganti yang manual tadi dengan ini
+    resumeBGM();
     const video = document.getElementById('video-takeoff');
     if (video) {
         video.muted = true; video.currentTime = 0; video.play();
@@ -148,13 +152,16 @@ function pindahScene(nomorScene) {
             target.style.backgroundImage = `url('${bgImg}')`;
         }
         if (nomorScene === 12) {
-    resumeBGM();
+    // Langsung play ceria, jangan pakai resumeBGM
+    //const bgmCeria = document.getElementById('bgm-ceria');
+    // if (bgmCeria && bgmCeria.paused) bgmCeria.play().catch(e => console.log(e));
     const vid12 = document.getElementById('video-pemandangan');
     if (vid12) { vid12.play(); vid12.onended = () => { pindahScene('12b'); }; }
 }
 
         // --- SCENE 12b (TRANSISI NARASI WAKTU) ---
         if (nomorScene == '12b') {
+            gantiBGM('bgm-tegang');
             // Tunggu 3 detik agar narasi dibaca, lalu pindah ke 13 (otomatis memicu fade out)
             setTimeout(() => {
                 pindahScene(13);
@@ -175,27 +182,31 @@ function pindahScene(nomorScene) {
             }
         }
         if (nomorScene === '14b') {
-            const bgImg = (avatarPilihan === 'cowok') ? 'Scene11_Pilot_Cowok_Menenangkan_Penumpang_part1.png' : 'Scene11_Pilot_Cewek_Menenangkan_Penumpang_part1.png';
-            target.style.backgroundImage = `url('${bgImg}')`;
-        }
+    // gantiBGM('bgm-tegang'); // tambahkan di sini
+    const bgImg = (avatarPilihan === 'cowok') ? 'Scene11_Pilot_Cowok_Menenangkan_Penumpang_part1.png' : 'Scene11_Pilot_Cewek_Menenangkan_Penumpang_part1.png';
+    target.style.backgroundImage = `url('${bgImg}')`;
+}
         if (nomorScene === 15) {
             resetRecordingUI();
             const bgImg = (avatarPilihan === 'cowok') ? 'Scene11_Pilot_Cowok_Menenangkan_Penumpang_Part2.png' : 'Scene11_Pilot_Cewek_Menenangkan_Penumpang_part2.png';
             target.style.backgroundImage = `url('${bgImg}')`;
         }
         if (nomorScene === 16) {
-            const vid16 = document.getElementById('video-pemulihan');
-            if (vid16) { vid16.play(); vid16.onended = () => { pindahScene(18); }; }
-        }
+    gantiBGM('bgm-ceria'); // pindah ke sini dari bawah
+    const vid16 = document.getElementById('video-pemulihan');
+    if (vid16) { vid16.play(); vid16.onended = () => { pindahScene(17); }; } // 17 bukan 18
+}
         if (nomorScene === 18) {
-    resumeBGM(); // ← tambahkan di sini
+    // const bgmCeria = document.getElementById('bgm-ceria');
+    // if (bgmCeria && bgmCeria.paused) bgmCeria.play().catch(e => console.log(e));
     resetRecordingUI();
             const bgImg = (avatarPilihan === 'cowok') ? 'Scene13_Pilot_Cowok_Announcement(Landing).png' : 'Scene13_Pilot_Cewek_Announcement(Landing).png';
             target.style.backgroundImage = `url('${bgImg}')`;
         }
         // --- SCENE 19: VIDEO LANDING (PERBAIKAN AGAR TIDAK STUCK) ---
         if (nomorScene === 19) {
-    resumeBGM(); // ← tambahkan di sini
+    // const bgmCeria = document.getElementById('bgm-ceria');
+   //  if (bgmCeria && bgmCeria.paused) bgmCeria.play().catch(e => console.log(e));
     const vid19 = document.getElementById('video-landing');
             if (vid19) {
                 vid19.currentTime = 0; // Mulai dari awal
@@ -212,12 +223,15 @@ function pindahScene(nomorScene) {
                 };
             }
         }
-        if (nomorScene === 20 || nomorScene === 21) {
-            const g = (avatarPilihan === 'cowok') ? 'Cowok' : 'Cewek';
-            const suffix = (nomorScene === 21) ? '_Part2' : '';
-            target.style.backgroundImage = `url('Scene15_Pilot_${g}_Lihat_Luar${suffix}.png')`;
-        }
+        if (nomorScene === 20) {
+    const bgImg = (avatarPilihan === 'cowok') ? 'Scene15_Pilot_Cowok_Lihat_Luar_Part1.png' : 'Scene15_Pilot_Cewek_Lihat_Luar.png';
+    target.style.backgroundImage = `url('${bgImg}')`;
 
+}
+if (nomorScene === 21) {
+    const bgImg = (avatarPilihan === 'cowok') ? 'Scene15_Pilot_Cowok_Lihat_Luar_Part2.png' : 'Scene15_Pilot_Cewek_Lihat_Luar_Part2.png';
+    target.style.backgroundImage = `url('${bgImg}')`;
+}
         if (nomorScene === 22) target.style.backgroundImage = "url('Scene15_Petugas_Bagasi.png')";
        if (nomorScene === '22b') {
     const bgImg = (avatarPilihan === 'cowok') ? 'Scene15_Pilot_Cowok_Keluar_Kokpit.png' : 'Scene15_Pilot_Cewek_Keluar_Kokpit.png';
@@ -274,9 +288,7 @@ function pindahScene(nomorScene) {
          if (nomorScene === 2) {
         gantiBGM('bgm-ceria'); // panggil saja, tidak mendefinisikan
     }
-    if (nomorScene === 13) {
-        gantiBGM('bgm-tegang');
-    }
+
     if (nomorScene === 16) {
         gantiBGM('bgm-ceria');
     }
@@ -568,6 +580,7 @@ function berhentiRekam() {
         const btnRekam = sceneAktif.querySelector('.rekam');
         if(btnRekam) { btnRekam.classList.remove('recording'); btnRekam.innerText = "🔄 Rekam Ulang"; btnRekam.disabled = false; }
         if(sceneAktif.querySelector('.stop')) sceneAktif.querySelector('.stop').classList.add('hidden');
+         resumeBGM(); 
     }
 }
 
