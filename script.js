@@ -410,19 +410,35 @@ function putarVO(audioId) {
 // FUNGSI HOTSPOT SERAGAM
 // ==========================================
 let statusAtribut = { topi: false, wing: false, epaulet: false, dasi: false };
+const urutanAtribut = ['topi', 'epaulet', 'dasi', 'wing'];
+let indeksUrutan = 0; // Melacak sekarang giliran klik yang mana
+
 function klikAtribut(jenis) {
+    if (statusAtribut[jenis] === false) {
+        
+        // Jika urutannya SALAH
+        if (jenis !== urutanAtribut[indeksUrutan]) {
+            tampilkanPeringatan("Kenalan berurutan ya:\nTopi -> Pangkat -> Dasi -> Lencana Wing.");
+            return; // Hentikan proses, jangan munculkan popup penjelasan
+        }
+        
+        // Jika urutannya BENAR
+        statusAtribut[jenis] = true; // Tandai sudah terbuka
+        indeksUrutan++; // Majukan giliran ke atribut selanjutnya
+        document.getElementById('btn-' + jenis).classList.replace('belum', 'sudah');
+    }
+
     const info = {
         topi:    { judul: "Topi Pilot",   teks: "Ini topi pilot! Topi ini bikin kita kelihatan gagah dan menunjukkan kalau kita adalah kapten yang siap bertugas! Keren banget kan?",          gambar: "topi_pilot.png",    audio: "audio/voiceover/vo_topi.MP3" },
         wing:    { judul: "Lencana Wing", teks: "Ini lencana wing! Lencana ini tandanya kita sudah jago terbang dan siap membawa penumpang ke tempat tujuan!",               gambar: "lencana_wings.png", audio: "audio/voiceover/vo_wings.MP3" },
         epaulet: { judul: "Pangkat",      teks: "Ini pangkat pilot! Lihat garis-garisnya di bahu! Garis ini menunjukkan kalau kita adalah kapten pesawat yang hebat!",                       gambar: "epaulet.png",       audio: "audio/voiceover/vo_pangkat.MP3" },
-        dasi:    { judul: "Dasi",         teks: "Ini dasi pilot! Dasi ini bikin penampilan kita jadi rapi dan kelihatan profesional! Wah, Kapten kita makin keren nih!",                                                  gambar: "dasi.png",          audio: "audio/voiceover/vo_dasi.MP3" }
+        dasi:    { judul: "Dasi",         teks: "Ini dasi pilot! Dasi ini bikin penampilan kita jadi rapi dan kelihatan profesional! Wah, Kapten kita makin keren nih!",                                         gambar: "dasi.png",          audio: "audio/voiceover/vo_dasi.MP3" }
     };
-      document.getElementById('popup-judul').innerText = info[jenis].judul;
+
+    document.getElementById('popup-judul').innerText = info[jenis].judul;
     document.getElementById('popup-teks').innerText = info[jenis].teks;
     document.getElementById('popup-gambar').src = info[jenis].gambar;
     document.getElementById('popup-atribut').classList.remove('hidden');
-    document.getElementById('btn-' + jenis).classList.replace('belum', 'sudah');
-    statusAtribut[jenis] = true;
 
     // Auto-play VO saat popup muncul
     const audioPopup = document.getElementById('audio-popup-atribut');
@@ -431,6 +447,19 @@ function klikAtribut(jenis) {
         audioPopup.currentTime = 0;
         audioPopup.play().catch(e => console.log("VO popup gagal:", e));
     }
+}
+
+// 3. Fungsi tambahan untuk memunculkan & menutup custom alert
+function tampilkanPeringatan(pesan) {
+    document.getElementById('alert-teks').innerText = pesan;
+    document.getElementById('custom-alert').classList.remove('hidden');
+}
+
+function tutupAlert() {
+    document.getElementById('custom-alert').classList.add('hidden');
+    // Tambahkan SFX tombol opsional jika ada
+    const sfx = document.getElementById('sfx-button');
+    if (sfx) { sfx.currentTime = 0; sfx.play(); }
 }
 
 function tutupPopup() {
