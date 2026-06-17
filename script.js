@@ -492,8 +492,25 @@ function tutupPopup() {
 // FUNGSI HOTSPOT KOKPIT (3 ITEM SAJA)
 // ==========================================
 let statusKokpit = { mesin: false, gas: false, setir: false }; 
+const urutanKokpit = ['mesin', 'gas', 'setir'];
+let indeksKokpit = 0;
 
 function klikKokpit(jenis) {
+    if (statusKokpit[jenis] === false) {
+        
+        // Jika urutannya SALAH
+        if (jenis !== urutanKokpit[indeksKokpit]) {
+            // Gunakan fungsi alert yang sama dengan atribut seragam
+            tampilkanPeringatan("Wah, kliknya berurutan ya:\nTombol Mesin -> Tuas Gas -> Setir (Yoke).");
+            return; // Hentikan proses
+        }
+        
+        // Jika urutannya BENAR
+        statusKokpit[jenis] = true;
+        indeksKokpit++;
+        document.getElementById('btn-' + jenis).classList.replace('belum', 'sudah');
+    }
+
     const info = {
         mesin: { judul: "Engine Start",  teks: "Ini tombol nyalain mesin! Kalau tombol ini ditekan, mesin pesawat akan mulai menyala dan siap untuk terbang!", gambar: "Scene6_start_engine.png", audio: "audio/voiceover/vo_engine_start.MP3" },
         gas:   { judul: "Tuas Gas",      teks: "Ini tuas gas! Tuas ini kita dorong ke depan supaya pesawat bisa melaju lebih cepat!",                          gambar: "Scene6_tuas.png",        audio: "audio/voiceover/vo_tuas_gas.MP3" },
@@ -502,25 +519,35 @@ function klikKokpit(jenis) {
     document.getElementById('popup-judul-kokpit').innerText = info[jenis].judul;
     document.getElementById('popup-teks-kokpit').innerText = info[jenis].teks;
     document.getElementById('popup-gambar-kokpit').src = info[jenis].gambar;
+    document.getElementById('popup-kokpit').classList.remove('hidden');
     
     // Auto-play VO saat popup kokpit muncul
-const audioPopup = document.getElementById('audio-popup-kokpit');
-if (audioPopup) {
-    audioPopup.src = info[jenis].audio;
-    audioPopup.currentTime = 0;
-    audioPopup.play().catch(e => console.log("VO popup gagal:", e));
-}
+    const audioPopup = document.getElementById('audio-popup-kokpit');
+    const bgmCeria = document.getElementById('bgm-ceria');
     
-    
-    document.getElementById('popup-kokpit').classList.remove('hidden');
-    document.getElementById('btn-' + jenis).classList.replace('belum', 'sudah');
-    statusKokpit[jenis] = true;
+    if (audioPopup) {
+        audioPopup.src = info[jenis].audio;
+        audioPopup.currentTime = 0;
+
+        if (bgmCeria) bgmCeria.volume = 0.03;
+
+        audioPopup.play().catch(e => console.log("VO popup gagal:", e));
+        
+        audioPopup.onended = () => {
+            if (bgmCeria) bgmCeria.volume = 0.15; // BGM kembali normal
+        };
+    }
 }
 
 function tutupPopupKokpit() {
     document.getElementById('popup-kokpit').classList.add('hidden');
     const audioPopup = document.getElementById('audio-popup-kokpit');
+    const bgmCeria = document.getElementById('bgm-ceria');
+
     if (audioPopup) { audioPopup.pause(); audioPopup.currentTime = 0; }
+
+    if (bgmCeria) bgmCeria.volume = 0.15;
+    
     if (Object.values(statusKokpit).every(v => v)) {
         document.getElementById('btn-slide-lanjut').classList.remove('hidden');
     }
