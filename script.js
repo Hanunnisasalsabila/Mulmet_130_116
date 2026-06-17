@@ -29,7 +29,7 @@ function gantiBGM(id) {
     // Play hanya yang diminta
     const target = document.getElementById(id);
     if (target) {
-        target.volume = 0.4;
+        target.volume = 0.15;
         target.play().catch(e => console.log("BGM gagal:", e));
     }
 }
@@ -51,6 +51,14 @@ function pindahScene(nomorScene) {
         document.querySelectorAll('.btn-speaker.playing').forEach(b => b.classList.remove('playing'));
         currentVO = null;
     }
+    
+    // 2. TAMBAHKAN INI: Matikan suara rekaman pemain kalau masih nyala
+    const audioRekaman = document.getElementById('audio-playback');
+    if (audioRekaman) {
+        audioRekaman.pause();
+        audioRekaman.currentTime = 0;
+    }
+
     const fadeOverlay = document.getElementById('fade-black-overlay');
     
     // 1. Mulai Fade Out (Layar Menghitam)
@@ -380,8 +388,8 @@ function putarVO(audioId) {
 
     if (audio.paused) {
         // Kecilkan BGM saat VO bunyi
-        if (bgmCeria) bgmCeria.volume = 0.1;
-        if (bgmTegang) bgmTegang.volume = 0.1;
+        if (bgmCeria) bgmCeria.volume = 0.03;
+        if (bgmTegang) bgmTegang.volume = 0.03;
 
         audio.currentTime = 0;
         audio.play().catch(e => console.log("Gagal memutar audio:", e));
@@ -391,9 +399,9 @@ function putarVO(audioId) {
 
         audio.onended = () => {
             if (btn) btn.classList.remove('playing');
-            // Kembalikan volume BGM
-            if (bgmCeria) bgmCeria.volume = 0.4;
-            if (bgmTegang) bgmTegang.volume = 0.4;
+            // Kembalikan volume BGM setelah VO selesai
+            if (bgmCeria) bgmCeria.volume = 0.15; // Kembalikan ke 0.15
+            if (bgmTegang) bgmTegang.volume = 0.15; // Kembalikan ke 0.15
             currentVO = null;
         };
     } else {
@@ -401,8 +409,8 @@ function putarVO(audioId) {
         audio.pause();
         audio.currentTime = 0;
         if (btn) btn.classList.remove('playing');
-        if (bgmCeria) bgmCeria.volume = 0.4;
-        if (bgmTegang) bgmTegang.volume = 0.4;
+        if (bgmCeria) bgmCeria.volume = 0.15;
+        if (bgmTegang) bgmTegang.volume = 0.15;
         currentVO = null;
     }
 }
@@ -442,10 +450,17 @@ function klikAtribut(jenis) {
 
     // Auto-play VO saat popup muncul
     const audioPopup = document.getElementById('audio-popup-atribut');
+    const bgmCeria = document.getElementById('bgm-ceria');
     if (audioPopup) {
         audioPopup.src = info[jenis].audio;
         audioPopup.currentTime = 0;
+
+        if (bgmCeria) bgmCeria.volume = 0.03;
         audioPopup.play().catch(e => console.log("VO popup gagal:", e));
+
+        audioPopup.onended = () => {
+            if (bgmCeria) bgmCeria.volume = 0.15;
+        };
     }
 }
 
@@ -465,7 +480,9 @@ function tutupAlert() {
 function tutupPopup() {
     document.getElementById('popup-atribut').classList.add('hidden');
     const audioPopup = document.getElementById('audio-popup-atribut');
+    const bgmCeria = document.getElementById('bgm-ceria');
     if (audioPopup) { audioPopup.pause(); audioPopup.currentTime = 0; }
+    if (bgmCeria) bgmCeria.volume = 0.15;
     if (Object.values(statusAtribut).every(v => v)) {
         document.getElementById('btn-lanjut-scene3').classList.remove('hidden');
     }
@@ -520,7 +537,7 @@ function gantiSlideKokpit(index, reset = false) {
 
     // Kembalikan volume BGM ke normal
     const bgmCeria = document.getElementById('bgm-ceria');
-    if (bgmCeria) bgmCeria.volume = 0.4;
+    if (bgmCeria) bgmCeria.volume = 0.15;
 
     document.querySelectorAll('.kokpit-slide').forEach(s => s.classList.remove('aktif'));
     document.querySelectorAll('.slide-dot').forEach(d => d.classList.remove('aktif'));
